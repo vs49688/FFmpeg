@@ -682,11 +682,11 @@ static void adpcm_swf_decode(AVCodecContext *avctx, const uint8_t *buf, int buf_
     }
 }
 
-static inline int16_t adpcm_argo_expand_nibble(ADPCMChannelStatus *cs, int nibble, int control, int shift)
+static inline int16_t adpcm_argo_expand_nibble(ADPCMChannelStatus *cs, int nibble, int shift, int flag)
 {
-    int sample = nibble * (1 << shift);
+    int sample = sign_extend(nibble, 4) * (1 << shift);
 
-    if (control & 0x04)
+    if (flag)
         sample += (8 * cs->sample1) - (4 * cs->sample2);
     else
         sample += 4 * cs->sample1;
@@ -2000,8 +2000,8 @@ static int adpcm_decode_frame(AVCodecContext *avctx, void *data,
 
             for (n = 0; n < nb_samples / 2; n++) {
                 int sample = bytestream2_get_byteu(&gb);
-                *samples++ = adpcm_argo_expand_nibble(cs, sign_extend(sample >> 4, 4), control, shift);
-                *samples++ = adpcm_argo_expand_nibble(cs, sign_extend(sample >> 0, 4), control, shift);
+                *samples++ = adpcm_argo_expand_nibble(cs, sample >> 4, shift, control & 0x04);
+                *samples++ = adpcm_argo_expand_nibble(cs, sample >> 0, shift, control & 0x04);
             }
         }
         break;
