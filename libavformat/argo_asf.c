@@ -56,6 +56,9 @@ enum {
     ASF_CF_ALWAYS0          = ~(ASF_CF_BITS_PER_SAMPLE | ASF_CF_STEREO | ASF_CF_ALWAYS1)
 };
 
+/* Maximum number of blocks to read at once. */
+#define ASF_NB_BLOCKS 32
+
 typedef struct ArgoASFDemuxContext {
     ArgoASFFileHeader   fhdr;
     ArgoASFChunkHeader  ckhdr;
@@ -198,11 +201,9 @@ static int argo_asf_read_header(AVFormatContext *s)
      * (nchannel control bytes) + ((bytes_per_channel) * nchannel)
      * For mono, this is 17. For stereo, this is 34.
      */
-    st->codecpar->frame_size            = st->codecpar->channels +
+    st->codecpar->block_align           = st->codecpar->channels +
                                           (asf->ckhdr.num_samples / 2) *
                                           st->codecpar->channels;
-
-    st->codecpar->block_align           = st->codecpar->frame_size;
 
     st->codecpar->bit_rate              = st->codecpar->channels *
                                           st->codecpar->sample_rate *
@@ -226,15 +227,21 @@ static int argo_asf_read_packet(AVFormatContext *s, AVPacket *pkt)
     if (asf->blocks_read >= asf->ckhdr.num_blocks)
         return AVERROR_EOF;
 
-    if ((ret = av_get_packet(pb, pkt, st->codecpar->frame_size)) < 0)
+    ret = av_get_packet(pb, pkt, st->codecpar->block_align *
+                        FFMIN(ASF_NB_BLOCKS, asf->ckhdr.num_blocks - asf->blocks_read));
+    if (ret < 0)
         return ret;
-    else if (ret != st->codecpar->frame_size)
+
+    /* Something real screwy is going on. */
+    if (ret % st->codecpar->block_align != 0)
         return AVERROR_INVALIDDATA;
 
-    pkt->stream_index   = st->index;
-    pkt->duration       = asf->ckhdr.num_samples;
 
-    ++asf->blocks_read;
+    pkt->stream_index   = st->index;
+    pkt->duration       = asf->ckhdr.num_samples * (ret / st->codecpar->block_align);
+    asf->blocks_read   += (ret / st->codecpar->block_align);
+
+    pkt->flags &= ~AV_PKT_FLAG_CORRUPT;
     return 0;
 }
 
