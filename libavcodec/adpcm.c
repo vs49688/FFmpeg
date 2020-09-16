@@ -1987,22 +1987,22 @@ static int adpcm_decode_frame(AVCodecContext *avctx, void *data,
          * They should be 0 initially.
          */
         for (int block = 0; block < avpkt->size / avctx->block_align; block++) {
-        for (channel = 0; channel < avctx->channels; channel++) {
-            int control, shift;
+            for (channel = 0; channel < avctx->channels; channel++) {
+                int control, shift;
 
-            samples = samples_p[channel] + block * 32;
-            cs = c->status + channel;
+                samples = samples_p[channel] + block * 32;
+                cs = c->status + channel;
 
-            /* Get the control byte and decode the samples, 2 at a time. */
-            control = bytestream2_get_byteu(&gb);
-            shift = (control >> 4) + 2;
+                /* Get the control byte and decode the samples, 2 at a time. */
+                control = bytestream2_get_byteu(&gb);
+                shift = (control >> 4) + 2;
 
-            for (n = 0; n < 16; n++) {
-                int sample = bytestream2_get_byteu(&gb);
-                *samples++ = adpcm_argo_expand_nibble(cs, sample >> 4, shift, control & 0x04);
-                *samples++ = adpcm_argo_expand_nibble(cs, sample >> 0, shift, control & 0x04);
+                for (n = 0; n < 16; n++) {
+                    int sample = bytestream2_get_byteu(&gb);
+                    *samples++ = adpcm_argo_expand_nibble(cs, sample >> 4, shift, control & 0x04);
+                    *samples++ = adpcm_argo_expand_nibble(cs, sample >> 0, shift, control & 0x04);
+                }
             }
-        }
         }
         break;
     case AV_CODEC_ID_ADPCM_ZORK:
