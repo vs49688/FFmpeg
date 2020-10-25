@@ -971,7 +971,7 @@ static inline int coupling_strategy(AC3DecodeContext *s, int blk,
         /* check for enhanced coupling */
         if (s->eac3 && get_bits1(bc)) {
             /* TODO: parse enhanced coupling strategy info */
-            avpriv_request_sample(s->avctx, "Enhanced coupling");
+            av_log_request_sample(s->avctx, "Enhanced coupling");
             return AVERROR_PATCHWELCOME;
         }
 

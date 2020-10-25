@@ -453,7 +453,7 @@ static int decode_frame(AVCodecContext *avctx, void *data, int *got_frame_ptr,
         out_frame = (int16_t*)frame->data[c];
         if (avctx->codec_id == AV_CODEC_ID_ACELP_KELVIN) {
             if (*buf != ((avctx->channels - 1 - c) * 0x80 | 2))
-                avpriv_request_sample(avctx, "First byte value %x for channel %d", *buf, c);
+                av_log_request_sample(avctx, "First byte value %x for channel %d", *buf, c);
             buf++;
         }
 

@@ -379,7 +379,7 @@ static int lag_decode_zero_run_line(LagarithContext *l, uint8_t *dst,
     uint8_t mask2 = -(esc_count < 3);
     uint8_t *end = dst + (width - 2);
 
-    avpriv_request_sample(l->avctx, "zero_run_line");
+    av_log_request_sample(l->avctx, "zero_run_line");
 
     memset(dst, 0, width);
 

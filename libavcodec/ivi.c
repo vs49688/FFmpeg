@@ -399,7 +399,7 @@ av_cold int ff_ivi_init_tiles(IVIPlaneDesc *planes,
 
         if (!p && planes[0].num_bands == 4) {
             if (t_width % 2 || t_height % 2) {
-                avpriv_request_sample(NULL, "Odd tiles");
+                av_log_request_sample(NULL, "Odd tiles");
                 return AVERROR_PATCHWELCOME;
             }
             t_width  >>= 1;

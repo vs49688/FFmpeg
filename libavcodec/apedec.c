@@ -255,7 +255,7 @@ static av_cold int ape_decode_init(AVCodecContext *avctx)
         avctx->sample_fmt = AV_SAMPLE_FMT_S32P;
         break;
     default:
-        avpriv_request_sample(avctx,
+        av_log_request_sample(avctx,
                               "%d bits per coded sample", s->bps);
         return AVERROR_PATCHWELCOME;
     }

@@ -201,7 +201,7 @@ static int pix_decode_frame(AVCodecContext *avctx, void *data, int *got_frame,
         bytes_pp = 2;
         break;
     default:
-        avpriv_request_sample(avctx, "Format %d", hdr.format);
+        av_log_request_sample(avctx, "Format %d", hdr.format);
         return AVERROR_PATCHWELCOME;
     }
     bytes_per_scanline = bytes_pp * hdr.width;
@@ -230,7 +230,7 @@ static int pix_decode_frame(AVCodecContext *avctx, void *data, int *got_frame,
             return ret;
         }
         if (palhdr.format != 7)
-            avpriv_request_sample(avctx, "Palette not in RGB format");
+            av_log_request_sample(avctx, "Palette not in RGB format");
 
         chunk_type = bytestream2_get_be32(&gb);
         data_len = bytestream2_get_be32(&gb);

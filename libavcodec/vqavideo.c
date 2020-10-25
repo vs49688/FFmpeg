@@ -142,7 +142,7 @@ static av_cold int vqa_decode_init(AVCodecContext *avctx)
         avpriv_report_missing_feature(avctx, "VQA Version %d", s->vqa_version);
         return AVERROR_PATCHWELCOME;
     default:
-        avpriv_request_sample(avctx, "VQA Version %i", s->vqa_version);
+        av_log_request_sample(avctx, "VQA Version %i", s->vqa_version);
         return AVERROR_PATCHWELCOME;
     }
     s->width = AV_RL16(&s->avctx->extradata[6]);

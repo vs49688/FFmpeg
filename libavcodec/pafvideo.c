@@ -283,7 +283,7 @@ static int paf_video_decode(AVCodecContext *avctx, void *data,
 
     code = bytestream2_get_byte(&c->gb);
     if ((code & 0xF) > 4 || (code & 0xF) == 3) {
-        avpriv_request_sample(avctx, "unknown/invalid code");
+        av_log_request_sample(avctx, "unknown/invalid code");
         return AVERROR_INVALIDDATA;
     }
 

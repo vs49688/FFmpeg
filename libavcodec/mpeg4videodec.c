@@ -379,7 +379,7 @@ static int mpeg4_decode_sprite_trajectory(Mpeg4DecContext *ctx, GetBitContext *g
                 FFABS(   sprite_delta[0][i]) >= INT_MAX >> shift_y  ||
                 FFABS(   sprite_delta[1][i]) >= INT_MAX >> shift_y
             ) {
-                avpriv_request_sample(s->avctx, "Too large sprite shift, delta or offset");
+                av_log_request_sample(s->avctx, "Too large sprite shift, delta or offset");
                 goto overflow;
             }
         }
@@ -409,7 +409,7 @@ static int mpeg4_decode_sprite_trajectory(Mpeg4DecContext *ctx, GetBitContext *g
                 llabs(sprite_offset[0][i] + sd[1] * (h+16LL)) >= INT_MAX ||
                 llabs(sprite_offset[0][i] + sd[0] * (w+16LL) + sd[1] * (h+16LL)) >= INT_MAX
             ) {
-                avpriv_request_sample(s->avctx, "Overflow on sprite points");
+                av_log_request_sample(s->avctx, "Overflow on sprite points");
                 goto overflow;
             }
         }
@@ -3119,7 +3119,7 @@ static int decode_studiovisualobject(Mpeg4DecContext *ctx, GetBitContext *gb)
         skip_bits(gb, 4); /* visual_object_verid */
         visual_object_type = get_bits(gb, 4);
         if (visual_object_type != VOT_VIDEO_ID) {
-            avpriv_request_sample(s->avctx, "VO type %u", visual_object_type);
+            av_log_request_sample(s->avctx, "VO type %u", visual_object_type);
             return AVERROR_PATCHWELCOME;
         }
 
@@ -3143,7 +3143,7 @@ static int decode_studio_vol_header(Mpeg4DecContext *ctx, GetBitContext *gb)
             skip_bits(gb, 4); /* video_object_layer_shape_extension */
             skip_bits1(gb); /* progressive_sequence */
             if (ctx->shape != RECT_SHAPE) {
-                avpriv_request_sample(s->avctx, "MPEG-4 Studio profile non rectangular shape");
+                av_log_request_sample(s->avctx, "MPEG-4 Studio profile non rectangular shape");
                 return AVERROR_PATCHWELCOME;
             }
             if (ctx->shape != BIN_ONLY_SHAPE) {
@@ -3164,7 +3164,7 @@ static int decode_studio_vol_header(Mpeg4DecContext *ctx, GetBitContext *gb)
                     }
                 }
                 else {
-                    avpriv_request_sample(s->avctx, "MPEG-4 Studio profile bit-depth %u", bits_per_raw_sample);
+                    av_log_request_sample(s->avctx, "MPEG-4 Studio profile bit-depth %u", bits_per_raw_sample);
                     return AVERROR_PATCHWELCOME;
                 }
                 if (rgb != ctx->rgb || s->chroma_format != chroma_format)
@@ -3347,7 +3347,7 @@ int ff_mpeg4_decode_picture_header(Mpeg4DecContext *ctx, GetBitContext *gb, int 
                 next_start_code_studio(gb);
                 extension_and_user_data(s, gb, 0);
             } else if (s->studio_profile) {
-                avpriv_request_sample(s->avctx, "Mix of studio and non studio profile");
+                av_log_request_sample(s->avctx, "Mix of studio and non studio profile");
                 return AVERROR_PATCHWELCOME;
             }
             s->avctx->profile = profile;

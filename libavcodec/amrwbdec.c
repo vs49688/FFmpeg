@@ -1145,7 +1145,7 @@ static int amrwb_decode_frame(AVCodecContext *avctx, void *data,
     }
 
     if (ctx->fr_cur_mode == MODE_SID) { /* Comfort noise frame */
-        avpriv_request_sample(avctx, "SID mode");
+        av_log_request_sample(avctx, "SID mode");
         return AVERROR_PATCHWELCOME;
     }
 

@@ -406,7 +406,7 @@ static void smc_decode_stream(SmcContext *s)
             break;
 
         case 0xF0:
-            avpriv_request_sample(s->avctx, "0xF0 opcode");
+            av_log_request_sample(s->avctx, "0xF0 opcode");
             break;
         }
     }

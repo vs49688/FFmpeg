@@ -991,7 +991,7 @@ static av_cold int decode_init(AVCodecContext *avctx)
     av_pix_fmt_get_chroma_sub_sample(avctx->pix_fmt, &h_shift, &v_shift);
     if ((avctx->width  & ((1<<h_shift)-1)) ||
         (avctx->height & ((1<<v_shift)-1))) {
-        avpriv_request_sample(avctx, "Odd dimensions");
+        av_log_request_sample(avctx, "Odd dimensions");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -1003,7 +1003,7 @@ static av_cold int decode_init(AVCodecContext *avctx)
                AV_RB32(avctx->extradata + 4));
         c->compression = avctx->extradata[8];
         if (c->compression != 2)
-            avpriv_request_sample(avctx, "Unknown compression type");
+            av_log_request_sample(avctx, "Unknown compression type");
         c->slices      = avctx->extradata[9] + 1;
     } else if (!c->pro && avctx->extradata_size >= 16) {
         av_log(avctx, AV_LOG_DEBUG, "Encoder version %d.%d.%d.%d\n",
@@ -1015,7 +1015,7 @@ static av_cold int decode_init(AVCodecContext *avctx)
         c->flags           = AV_RL32(avctx->extradata + 12);
 
         if (c->frame_info_size != 4)
-            avpriv_request_sample(avctx, "Frame info not 4 bytes");
+            av_log_request_sample(avctx, "Frame info not 4 bytes");
         av_log(avctx, AV_LOG_DEBUG, "Encoding parameters %08"PRIX32"\n", c->flags);
         c->slices      = (c->flags >> 24) + 1;
         c->compression = c->flags & 1;

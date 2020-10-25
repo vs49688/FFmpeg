@@ -329,7 +329,7 @@ static av_cold int qdmc_decode_init(AVCodecContext *avctx)
     s->band_index = noise_bands_selector[FFMIN(6, llrint(floor(avctx->bit_rate * 3.0 / (double)x + 0.5)))];
 
     if ((fft_order < 7) || (fft_order > 9)) {
-        avpriv_request_sample(avctx, "Unknown FFT order %d", fft_order);
+        av_log_request_sample(avctx, "Unknown FFT order %d", fft_order);
         return AVERROR_PATCHWELCOME;
     }
 

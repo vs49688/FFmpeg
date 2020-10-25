@@ -169,7 +169,7 @@ static int decode_bytes(const uint8_t *input, uint8_t *out, int bytes)
         output[i] = c ^ buf[i];
 
     if (off)
-        avpriv_request_sample(NULL, "Offset of %d", off);
+        av_log_request_sample(NULL, "Offset of %d", off);
 
     return off;
 }

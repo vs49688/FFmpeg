@@ -360,7 +360,7 @@ static int truemotion1_decode_header(TrueMotion1Context *s)
         s->flags = FLAG_KEYFRAME;
 
     if (s->flags & FLAG_SPRITE) {
-        avpriv_request_sample(s->avctx, "Frame with sprite");
+        av_log_request_sample(s->avctx, "Frame with sprite");
         /* FIXME header.width, height, xoffset and yoffset aren't initialized */
         return AVERROR_PATCHWELCOME;
     } else {
@@ -370,7 +370,7 @@ static int truemotion1_decode_header(TrueMotion1Context *s)
             if ((s->w < 213) && (s->h >= 176))
             {
                 s->flags |= FLAG_INTERPOLATED;
-                avpriv_request_sample(s->avctx, "Interpolated frame");
+                av_log_request_sample(s->avctx, "Interpolated frame");
             }
         }
     }
@@ -403,7 +403,7 @@ static int truemotion1_decode_header(TrueMotion1Context *s)
 
     s->w >>= width_shift;
     if (s->w & 1) {
-        avpriv_request_sample(s->avctx, "Frame with odd width");
+        av_log_request_sample(s->avctx, "Frame with odd width");
         return AVERROR_PATCHWELCOME;
     }
 

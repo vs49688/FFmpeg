@@ -137,7 +137,7 @@ static av_cold int decode_init(AVCodecContext *avctx)
 
     ctx->version = AV_RB16(avctx->extradata + 4);
     if (ctx->version != 0x103) {
-        avpriv_request_sample(avctx, "Unknown version %X", ctx->version);
+        av_log_request_sample(avctx, "Unknown version %X", ctx->version);
         return AVERROR_PATCHWELCOME;
     }
 

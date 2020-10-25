@@ -541,7 +541,7 @@ static void fill_coding_method_array(sb_int8_array tone_level_idx,
 
     if (!superblocktype_2_3) {
         /* This case is untested, no samples available */
-        avpriv_request_sample(NULL, "!superblocktype_2_3");
+        av_log_request_sample(NULL, "!superblocktype_2_3");
         return;
         for (ch = 0; ch < nb_channels; ch++) {
             for (sb = 0; sb < 30; sb++) {
@@ -1716,7 +1716,7 @@ static av_cold int qdm2_decode_init(AVCodecContext *avctx)
 
     // Fail on unknown fft order
     if ((s->fft_order < 7) || (s->fft_order > 9)) {
-        avpriv_request_sample(avctx, "Unknown FFT order %d", s->fft_order);
+        av_log_request_sample(avctx, "Unknown FFT order %d", s->fft_order);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -1731,7 +1731,7 @@ static av_cold int qdm2_decode_init(AVCodecContext *avctx)
     s->frequency_range = 255 / (1 << (2 - s->sub_sampling));
 
     if (s->frame_size * 4 >> s->sub_sampling > MPA_FRAME_SIZE) {
-        avpriv_request_sample(avctx, "large frames");
+        av_log_request_sample(avctx, "large frames");
         return AVERROR_PATCHWELCOME;
     }
 

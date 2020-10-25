@@ -619,7 +619,7 @@ static int pixlet_decode_frame(AVCodecContext *avctx, void *data,
 
     version = bytestream2_get_le32(&ctx->gb);
     if (version != 1)
-        avpriv_request_sample(avctx, "Version %d", version);
+        av_log_request_sample(avctx, "Version %d", version);
 
     bytestream2_skip(&ctx->gb, 4);
     if (bytestream2_get_be32(&ctx->gb) != 1)
@@ -641,7 +641,7 @@ static int pixlet_decode_frame(AVCodecContext *avctx, void *data,
         return AVERROR_INVALIDDATA;
     depth = bytestream2_get_be32(&ctx->gb);
     if (depth < 8 || depth > 15) {
-        avpriv_request_sample(avctx, "Depth %d", depth);
+        av_log_request_sample(avctx, "Depth %d", depth);
         return AVERROR_INVALIDDATA;
     }
 

@@ -1057,7 +1057,7 @@ static int encode_packets(Jpeg2000EncoderContext *s, Jpeg2000Tile *tile, int til
             }
         }
         if (step_x >= 31 || step_y >= 31){
-            avpriv_request_sample(s->avctx, "PCRL with large step");
+            av_log_request_sample(s->avctx, "PCRL with large step");
             return AVERROR_PATCHWELCOME;
         }
         step_x = 1<<step_x;
@@ -1124,7 +1124,7 @@ static int encode_packets(Jpeg2000EncoderContext *s, Jpeg2000Tile *tile, int til
                 step_y = FFMIN(step_y, rlevel->log2_prec_height + reducedresno);
             }
             if (step_x >= 31 || step_y >= 31){
-                avpriv_request_sample(s->avctx, "CPRL with large step");
+                av_log_request_sample(s->avctx, "CPRL with large step");
                 return AVERROR_PATCHWELCOME;
             }
             step_x = 1<<step_x;

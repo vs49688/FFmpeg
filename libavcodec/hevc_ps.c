@@ -1193,7 +1193,7 @@ int ff_hevc_parse_sps(HEVCSPS *sps, GetBitContext *gb, unsigned int *sps_id,
                AV_LOG_ERROR,
                "log2_ctb_size %d differs from the bounds of any known profile\n",
                sps->log2_ctb_size);
-        avpriv_request_sample(avctx, "log2_ctb_size %d", sps->log2_ctb_size);
+        av_log_request_sample(avctx, "log2_ctb_size %d", sps->log2_ctb_size);
         return AVERROR_INVALIDDATA;
     }
 

@@ -1532,7 +1532,7 @@ static int svq3_decode_frame(AVCodecContext *avctx, void *data,
                         return -1;
                 }
                 if (s->slice_type != s->pict_type) {
-                    avpriv_request_sample(avctx, "non constant slice type");
+                    av_log_request_sample(avctx, "non constant slice type");
                 }
                 /* TODO: support s->mb_skip_run */
             }

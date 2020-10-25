@@ -1967,7 +1967,7 @@ static int decode_frame(AVCodecContext *avctx,
         table           = yry10i;
         break;
     default:
-        avpriv_request_sample(avctx, "unsupported format: 0x%X", format);
+        av_log_request_sample(avctx, "unsupported format: 0x%X", format);
         return AVERROR_PATCHWELCOME;
     }
 

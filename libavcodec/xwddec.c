@@ -102,7 +102,7 @@ static int xwd_decode_frame(AVCodecContext *avctx, void *data,
     }
 
     if (xoffset) {
-        avpriv_request_sample(avctx, "xoffset %"PRIu32"", xoffset);
+        av_log_request_sample(avctx, "xoffset %"PRIu32"", xoffset);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -205,7 +205,7 @@ static int xwd_decode_frame(AVCodecContext *avctx, void *data,
     }
 
     if (avctx->pix_fmt == AV_PIX_FMT_NONE) {
-        avpriv_request_sample(avctx,
+        av_log_request_sample(avctx,
                               "Unknown file: bpp %"PRIu32", pixdepth %"PRIu32", vclass %"PRIu32"",
                               bpp, pixdepth, vclass);
         return AVERROR_PATCHWELCOME;

@@ -556,7 +556,7 @@ static int vp7_decode_frame_header(VP8Context *s, const uint8_t *buf, int buf_si
 
     s->profile = (buf[0] >> 1) & 7;
     if (s->profile > 1) {
-        avpriv_request_sample(s->avctx, "Unknown profile %d", s->profile);
+        av_log_request_sample(s->avctx, "Unknown profile %d", s->profile);
         return AVERROR_INVALIDDATA;
     }
 
@@ -587,7 +587,7 @@ static int vp7_decode_frame_header(VP8Context *s, const uint8_t *buf, int buf_si
         hscale = vp8_rac_get_uint(c, 2);
         vscale = vp8_rac_get_uint(c, 2);
         if (hscale || vscale)
-            avpriv_request_sample(s->avctx, "Upscaling");
+            av_log_request_sample(s->avctx, "Upscaling");
 
         s->update_golden = s->update_altref = VP56_FRAME_CURRENT;
         vp78_reset_probability_tables(s);
@@ -755,7 +755,7 @@ static int vp8_decode_frame_header(VP8Context *s, const uint8_t *buf, int buf_si
         buf_size -= 7;
 
         if (hscale || vscale)
-            avpriv_request_sample(s->avctx, "Upscaling");
+            av_log_request_sample(s->avctx, "Upscaling");
 
         s->update_golden = s->update_altref = VP56_FRAME_CURRENT;
         vp78_reset_probability_tables(s);

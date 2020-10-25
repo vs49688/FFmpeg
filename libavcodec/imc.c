@@ -195,7 +195,7 @@ static av_cold int imc_decode_init(AVCodecContext *avctx)
         avctx->channels = 1;
 
     if (avctx->channels > 2) {
-        avpriv_request_sample(avctx, "Number of channels > 2");
+        av_log_request_sample(avctx, "Number of channels > 2");
         return AVERROR_PATCHWELCOME;
     }
 

@@ -109,7 +109,7 @@ static int vc1_parse_sprites(VC1Context *v, GetBitContext* gb, SpriteData* sd)
     for (sprite = 0; sprite <= v->two_sprites; sprite++) {
         vc1_sprite_parse_transform(gb, sd->coefs[sprite]);
         if (sd->coefs[sprite][1] || sd->coefs[sprite][3])
-            avpriv_request_sample(avctx, "Non-zero rotation coefficients");
+            av_log_request_sample(avctx, "Non-zero rotation coefficients");
         av_log(avctx, AV_LOG_DEBUG, sprite ? "S2:" : "S1:");
         for (i = 0; i < 7; i++)
             av_log(avctx, AV_LOG_DEBUG, " %d.%.3d",
@@ -451,7 +451,7 @@ static av_cold int vc1_decode_init(AVCodecContext *avctx)
           return ret;
 
         if (avctx->codec_id == AV_CODEC_ID_WMV3IMAGE && !v->res_sprite) {
-            avpriv_request_sample(avctx, "Non sprite WMV3IMAGE");
+            av_log_request_sample(avctx, "Non sprite WMV3IMAGE");
             return AVERROR_PATCHWELCOME;
         }
 
@@ -582,7 +582,7 @@ static av_cold int vc1_decode_init(AVCodecContext *avctx)
         }
 
         if ((v->sprite_width&1) || (v->sprite_height&1)) {
-            avpriv_request_sample(avctx, "odd sprites support");
+            av_log_request_sample(avctx, "odd sprites support");
             ret = AVERROR_PATCHWELCOME;
             goto error;
         }

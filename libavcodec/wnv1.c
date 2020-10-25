@@ -79,13 +79,13 @@ static int decode_frame(AVCodecContext *avctx,
     else {
         shift = 8 - (buf[2] >> 4);
         if (shift > 4) {
-            avpriv_request_sample(avctx,
+            av_log_request_sample(avctx,
                                   "Unknown WNV1 frame header value %i",
                                   buf[2] >> 4);
             shift = 4;
         }
         if (shift < 1) {
-            avpriv_request_sample(avctx,
+            av_log_request_sample(avctx,
                                   "Unknown WNV1 frame header value %i",
                                   buf[2] >> 4);
             shift = 1;

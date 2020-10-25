@@ -194,7 +194,7 @@ static int dnxhd_decode_header(DNXHDContext *ctx, AVFrame *frame,
     ctx->alpha = buf[0x7] & 1;
     ctx->lla   = (buf[0x7] >> 1) & 1;
     if (ctx->alpha)
-        avpriv_request_sample(ctx->avctx, "alpha");
+        av_log_request_sample(ctx->avctx, "alpha");
 
     ctx->height = AV_RB16(buf + 0x18);
     ctx->width  = AV_RB16(buf + 0x1a);
@@ -234,7 +234,7 @@ static int dnxhd_decode_header(DNXHDContext *ctx, AVFrame *frame,
     ctx->is_444 = (buf[0x2C] >> 6) & 1;
     if (ctx->is_444) {
         if (bitdepth == 8) {
-            avpriv_request_sample(ctx->avctx, "4:4:4 8 bits");
+            av_log_request_sample(ctx->avctx, "4:4:4 8 bits");
             return AVERROR_INVALIDDATA;
         } else if (bitdepth == 10) {
             ctx->decode_dct_block = dnxhd_decode_dct_block_10_444;

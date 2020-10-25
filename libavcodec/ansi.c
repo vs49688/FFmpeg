@@ -249,7 +249,7 @@ static int execute_code(AVCodecContext * avctx, int c)
             height = 60<<4;
             break;
         default:
-            avpriv_request_sample(avctx, "Unsupported screen mode");
+            av_log_request_sample(avctx, "Unsupported screen mode");
         }
         s->x = av_clip(s->x, 0, width  - FONT_WIDTH);
         s->y = av_clip(s->y, 0, height - s->font_height);
@@ -328,7 +328,7 @@ static int execute_code(AVCodecContext * avctx, int c)
             } else if (m == 49) {
                 s->fg = ansi_to_cga[DEFAULT_BG_COLOR];
             } else {
-                avpriv_request_sample(avctx, "Unsupported rendition parameter");
+                av_log_request_sample(avctx, "Unsupported rendition parameter");
             }
         }
         break;
@@ -345,7 +345,7 @@ static int execute_code(AVCodecContext * avctx, int c)
         s->y = av_clip(s->sy, 0, avctx->height - s->font_height);
         break;
     default:
-        avpriv_request_sample(avctx, "Unknown escape code");
+        av_log_request_sample(avctx, "Unknown escape code");
         break;
     }
     s->x = av_clip(s->x, 0, avctx->width  - FONT_WIDTH);

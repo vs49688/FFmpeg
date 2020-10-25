@@ -222,7 +222,7 @@ static int magy_decode_slice10(AVCodecContext *avctx, void *tdata,
             }
             break;
         default:
-            avpriv_request_sample(avctx, "Unknown prediction: %d", pred);
+            av_log_request_sample(avctx, "Unknown prediction: %d", pred);
         }
     }
 
@@ -355,7 +355,7 @@ static int magy_decode_slice(AVCodecContext *avctx, void *tdata,
             }
             break;
         default:
-            avpriv_request_sample(avctx, "Unknown prediction: %d", pred);
+            av_log_request_sample(avctx, "Unknown prediction: %d", pred);
         }
     }
 
@@ -458,7 +458,7 @@ static int magy_decode_frame(AVCodecContext *avctx, void *data,
 
     version = bytestream2_get_byteu(&gb);
     if (version != 7) {
-        avpriv_request_sample(avctx, "Version %d", version);
+        av_log_request_sample(avctx, "Version %d", version);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -543,7 +543,7 @@ static int magy_decode_frame(AVCodecContext *avctx, void *data,
         s->bps = 10;
         break;
     default:
-        avpriv_request_sample(avctx, "Format 0x%X", format);
+        av_log_request_sample(avctx, "Format 0x%X", format);
         return AVERROR_PATCHWELCOME;
     }
     s->max = 1 << s->bps;
@@ -564,7 +564,7 @@ static int magy_decode_frame(AVCodecContext *avctx, void *data,
 
     slice_width = bytestream2_get_le32u(&gb);
     if (slice_width != avctx->coded_width) {
-        avpriv_request_sample(avctx, "Slice width %"PRIu32, slice_width);
+        av_log_request_sample(avctx, "Slice width %"PRIu32, slice_width);
         return AVERROR_PATCHWELCOME;
     }
     s->slice_height = bytestream2_get_le32u(&gb);

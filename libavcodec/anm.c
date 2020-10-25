@@ -128,11 +128,11 @@ static int decode_frame(AVCodecContext *avctx,
     bytestream2_init(&gb, avpkt->data, buf_size);
 
     if (bytestream2_get_byte(&gb) != 0x42) {
-        avpriv_request_sample(avctx, "Unknown record type");
+        av_log_request_sample(avctx, "Unknown record type");
         return AVERROR_INVALIDDATA;
     }
     if (bytestream2_get_byte(&gb)) {
-        avpriv_request_sample(avctx, "Padding bytes");
+        av_log_request_sample(avctx, "Padding bytes");
         return AVERROR_PATCHWELCOME;
     }
     bytestream2_skip(&gb, 2);
@@ -161,7 +161,7 @@ static int decode_frame(AVCodecContext *avctx,
                 if (type == 0)
                     break; // stop
                 if (type == 2) {
-                    avpriv_request_sample(avctx, "Unknown opcode");
+                    av_log_request_sample(avctx, "Unknown opcode");
                     return AVERROR_PATCHWELCOME;
                 }
                 continue;

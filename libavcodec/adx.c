@@ -53,7 +53,7 @@ int ff_adx_decode_header(AVCodecContext *avctx, const uint8_t *buf,
 
     /* check for encoding=3 block_size=18, sample_size=4 */
     if (buf[4] != 3 || buf[5] != 18 || buf[6] != 4) {
-        avpriv_request_sample(avctx, "Support for this ADX format");
+        av_log_request_sample(avctx, "Support for this ADX format");
         return AVERROR_PATCHWELCOME;
     }
 

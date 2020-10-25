@@ -297,7 +297,7 @@ static int get_siz(Jpeg2000DecoderContext *s)
     ncomponents       = bytestream2_get_be16u(&s->g); // CSiz
 
     if (av_image_check_size2(s->width, s->height, s->avctx->max_pixels, AV_PIX_FMT_NONE, 0, s->avctx)) {
-        avpriv_request_sample(s->avctx, "Large Dimensions");
+        av_log_request_sample(s->avctx, "Large Dimensions");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -308,7 +308,7 @@ static int get_siz(Jpeg2000DecoderContext *s)
     }
 
     if (ncomponents > 4) {
-        avpriv_request_sample(s->avctx, "Support for %d components",
+        av_log_request_sample(s->avctx, "Support for %d components",
                               ncomponents);
         return AVERROR_PATCHWELCOME;
     }
@@ -756,13 +756,13 @@ static int get_poc(Jpeg2000DecoderContext *s, int size, Jpeg2000POC *p)
     }
 
     if (elem_size > 7) {
-        avpriv_request_sample(s->avctx, "Fat POC not supported");
+        av_log_request_sample(s->avctx, "Fat POC not supported");
         return AVERROR_PATCHWELCOME;
     }
 
     tmp.nb_poc = (size - 2) / elem_size;
     if (tmp.nb_poc > MAX_POCS) {
-        avpriv_request_sample(s->avctx, "Too many POCs (%d)", tmp.nb_poc);
+        av_log_request_sample(s->avctx, "Too many POCs (%d)", tmp.nb_poc);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -837,7 +837,7 @@ static int get_sot(Jpeg2000DecoderContext *s, int n)
     }
 
     if (TPsot >= FF_ARRAY_ELEMS(s->tile[Isot].tile_part)) {
-        avpriv_request_sample(s->avctx, "Too many tile parts");
+        av_log_request_sample(s->avctx, "Too many tile parts");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -1161,13 +1161,13 @@ static int jpeg2000_decode_packet(Jpeg2000DecoderContext *s, Jpeg2000Tile *tile,
                 return newpasses;
             av_assert2(newpasses > 0);
             if (cblk->npasses + newpasses >= JPEG2000_MAX_PASSES) {
-                avpriv_request_sample(s->avctx, "Too many passes");
+                av_log_request_sample(s->avctx, "Too many passes");
                 return AVERROR_PATCHWELCOME;
             }
             if ((llen = getlblockinc(s)) < 0)
                 return llen;
             if (cblk->lblock + llen + av_log2(newpasses) > 16) {
-                avpriv_request_sample(s->avctx,
+                av_log_request_sample(s->avctx,
                                       "Block with length beyond 16 bits");
                 return AVERROR_PATCHWELCOME;
             }
@@ -1206,7 +1206,7 @@ static int jpeg2000_decode_packet(Jpeg2000DecoderContext *s, Jpeg2000Tile *tile,
                     }
                 }
                 if (ret > cblk->data_allocated) {
-                    avpriv_request_sample(s->avctx,
+                    av_log_request_sample(s->avctx,
                                         "Block with lengthinc greater than %"SIZE_SPECIFIER"",
                                         cblk->data_allocated);
                     return AVERROR_PATCHWELCOME;
@@ -1379,7 +1379,7 @@ static int jpeg2000_decode_packets_po_iteration(Jpeg2000DecoderContext *s, Jpeg2
                 step_y = FFMIN(step_y, rlevel->log2_prec_height + reducedresno);
             }
             if (step_x >= 31 || step_y >= 31){
-                avpriv_request_sample(s->avctx, "CPRL with large step");
+                av_log_request_sample(s->avctx, "CPRL with large step");
                 return AVERROR_PATCHWELCOME;
             }
             step_x = 1<<step_x;
@@ -1521,7 +1521,7 @@ static int jpeg2000_decode_packets_po_iteration(Jpeg2000DecoderContext *s, Jpeg2
             }
         }
         if (step_x >= 31 || step_y >= 31){
-            avpriv_request_sample(s->avctx, "PCRL with large step");
+            av_log_request_sample(s->avctx, "PCRL with large step");
             return AVERROR_PATCHWELCOME;
         }
         step_x = 1<<step_x;
@@ -2338,7 +2338,7 @@ static int jp2_find_codestream(Jpeg2000DecoderContext *s)
         atom      = bytestream2_get_be32u(&s->g);
         if (atom_size == 1) {
             if (bytestream2_get_be32u(&s->g)) {
-                avpriv_request_sample(s->avctx, "Huge atom");
+                av_log_request_sample(s->avctx, "Huge atom");
                 return 0;
             }
             atom_size = bytestream2_get_be32u(&s->g);
@@ -2388,7 +2388,7 @@ static int jp2_find_codestream(Jpeg2000DecoderContext *s)
                         colour_depth[1] > 16 ||
                         colour_depth[2] > 16 ||
                         atom2_size < size) {
-                        avpriv_request_sample(s->avctx, "Unknown palette");
+                        av_log_request_sample(s->avctx, "Unknown palette");
                         bytestream2_seek(&s->g, atom2_end, SEEK_SET);
                         continue;
                     }

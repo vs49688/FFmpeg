@@ -1100,7 +1100,7 @@ static int encode_frame(AVCodecContext *avctx, AVPacket *pkt,
                     ctx->frame_size_upper_bound += delta;
 
                     if (!ctx->warn) {
-                        avpriv_request_sample(avctx,
+                        av_log_request_sample(avctx,
                                               "Packet too small: is %i,"
                                               " needs %i (slice: %i). "
                                               "Correct allocation",

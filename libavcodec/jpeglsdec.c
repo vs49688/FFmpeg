@@ -85,7 +85,7 @@ int ff_jpegls_decode_lse(MJpegDecodeContext *s)
             return AVERROR_INVALIDDATA;
 
         if (wt < 1 || wt > MAX_COMPONENTS) {
-            avpriv_request_sample(s->avctx, "wt %d", wt);
+            av_log_request_sample(s->avctx, "wt %d", wt);
             return AVERROR_PATCHWELCOME;
         }
 
@@ -100,7 +100,7 @@ int ff_jpegls_decode_lse(MJpegDecodeContext *s)
             av_log(s->avctx, AV_LOG_DEBUG, "LSE palette %d tid:%d wt:%d maxtab:%d\n", id, tid, wt, maxtab);
         }
         if (maxtab >= 256) {
-            avpriv_request_sample(s->avctx, ">8bit palette");
+            av_log_request_sample(s->avctx, ">8bit palette");
             return AVERROR_PATCHWELCOME;
         }
         maxtab = FFMIN(maxtab, (len - 5) / wt + s->palette_index);
@@ -131,7 +131,7 @@ int ff_jpegls_decode_lse(MJpegDecodeContext *s)
         }
         break;
     case 4:
-        avpriv_request_sample(s->avctx, "oversize image");
+        av_log_request_sample(s->avctx, "oversize image");
         return AVERROR(ENOSYS);
     default:
         av_log(s->avctx, AV_LOG_ERROR, "invalid id %d\n", id);

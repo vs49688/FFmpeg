@@ -1085,7 +1085,7 @@ static av_cold int cook_decode_init(AVCodecContext *avctx)
 
     while (bytestream2_get_bytes_left(&gb)) {
         if (s >= FFMIN(MAX_SUBPACKETS, avctx->block_align)) {
-            avpriv_request_sample(avctx, "subpackets > %d", FFMIN(MAX_SUBPACKETS, avctx->block_align));
+            av_log_request_sample(avctx, "subpackets > %d", FFMIN(MAX_SUBPACKETS, avctx->block_align));
             return AVERROR_PATCHWELCOME;
         }
         /* 8 for mono, 16 for stereo, ? for multichannel
@@ -1118,7 +1118,7 @@ static av_cold int cook_decode_init(AVCodecContext *avctx)
         switch (q->subpacket[s].cookversion) {
         case MONO:
             if (avctx->channels != 1) {
-                avpriv_request_sample(avctx, "Container channels != 1");
+                av_log_request_sample(avctx, "Container channels != 1");
                 return AVERROR_PATCHWELCOME;
             }
             av_log(avctx, AV_LOG_DEBUG, "MONO\n");
@@ -1132,7 +1132,7 @@ static av_cold int cook_decode_init(AVCodecContext *avctx)
             break;
         case JOINT_STEREO:
             if (avctx->channels != 2) {
-                avpriv_request_sample(avctx, "Container channels != 2");
+                av_log_request_sample(avctx, "Container channels != 2");
                 return AVERROR_PATCHWELCOME;
             }
             av_log(avctx, AV_LOG_DEBUG, "JOINT_STEREO\n");
@@ -1171,7 +1171,7 @@ static av_cold int cook_decode_init(AVCodecContext *avctx)
 
             break;
         default:
-            avpriv_request_sample(avctx, "Cook version %d",
+            av_log_request_sample(avctx, "Cook version %d",
                                   q->subpacket[s].cookversion);
             return AVERROR_PATCHWELCOME;
         }
@@ -1188,7 +1188,7 @@ static av_cold int cook_decode_init(AVCodecContext *avctx)
 
         /* Try to catch some obviously faulty streams, otherwise it might be exploitable */
         if (q->subpacket[s].total_subbands > 53) {
-            avpriv_request_sample(avctx, "total_subbands > 53");
+            av_log_request_sample(avctx, "total_subbands > 53");
             return AVERROR_PATCHWELCOME;
         }
 
@@ -1200,11 +1200,11 @@ static av_cold int cook_decode_init(AVCodecContext *avctx)
         }
 
         if (q->subpacket[s].subbands > 50) {
-            avpriv_request_sample(avctx, "subbands > 50");
+            av_log_request_sample(avctx, "subbands > 50");
             return AVERROR_PATCHWELCOME;
         }
         if (q->subpacket[s].subbands == 0) {
-            avpriv_request_sample(avctx, "subbands = 0");
+            av_log_request_sample(avctx, "subbands = 0");
             return AVERROR_PATCHWELCOME;
         }
         q->subpacket[s].gains1.now      = q->subpacket[s].gain_1;
@@ -1224,7 +1224,7 @@ static av_cold int cook_decode_init(AVCodecContext *avctx)
     /* Try to catch some obviously faulty streams, otherwise it might be exploitable */
     if (q->samples_per_channel != 256 && q->samples_per_channel != 512 &&
         q->samples_per_channel != 1024) {
-        avpriv_request_sample(avctx, "samples_per_channel = %d",
+        av_log_request_sample(avctx, "samples_per_channel = %d",
                               q->samples_per_channel);
         return AVERROR_PATCHWELCOME;
     }

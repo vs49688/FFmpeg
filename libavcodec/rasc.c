@@ -233,7 +233,7 @@ static int decode_move(AVCodecContext *avctx,
         bytestream2_init(&mc, avpkt->data + bytestream2_tell(gb),
                          bytestream2_get_bytes_left(gb));
     } else if (compression == 2) {
-        avpriv_request_sample(avctx, "compression %d", compression);
+        av_log_request_sample(avctx, "compression %d", compression);
         return AVERROR_PATCHWELCOME;
     } else {
         return AVERROR_INVALIDDATA;
@@ -367,7 +367,7 @@ static int decode_dlta(AVCodecContext *avctx,
         bytestream2_init(&dc, avpkt->data + bytestream2_tell(gb),
                          uncompressed_size);
     } else if (compression == 2) {
-        avpriv_request_sample(avctx, "compression %d", compression);
+        av_log_request_sample(avctx, "compression %d", compression);
         return AVERROR_PATCHWELCOME;
     } else {
         return AVERROR_INVALIDDATA;
@@ -457,7 +457,7 @@ static int decode_dlta(AVCodecContext *avctx,
             }
             break;
         default:
-            avpriv_request_sample(avctx, "runlen %d", type);
+            av_log_request_sample(avctx, "runlen %d", type);
             return AVERROR_INVALIDDATA;
         }
     }

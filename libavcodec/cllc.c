@@ -335,7 +335,7 @@ static int decode_yuv_frame(CLLCContext *ctx, GetBitContext *gb, AVFrame *pic)
 
     block = get_bits(gb, 8);
     if (block) {
-        avpriv_request_sample(ctx->avctx, "Blocked YUV");
+        av_log_request_sample(ctx->avctx, "Blocked YUV");
         return AVERROR_PATCHWELCOME;
     }
 

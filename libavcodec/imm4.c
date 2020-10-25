@@ -442,7 +442,7 @@ static int decode_frame(AVCodecContext *avctx, void *data,
         frame->pict_type = AV_PICTURE_TYPE_P;
         break;
     default:
-        avpriv_request_sample(avctx, "type %X", type);
+        av_log_request_sample(avctx, "type %X", type);
         return AVERROR_PATCHWELCOME;
     }
 

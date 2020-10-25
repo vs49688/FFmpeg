@@ -300,7 +300,7 @@ static av_cold int decode_init(AVCodecContext *avctx)
         break;
     default:
         l->lossy = AV_RL32(avctx->extradata + 8);
-        avpriv_request_sample(avctx, "LOCO codec version %i", version);
+        av_log_request_sample(avctx, "LOCO codec version %i", version);
     }
 
     if (l->lossy > 65536U) {

@@ -432,7 +432,7 @@ int ff_dca_exss_parse(DCAExssParser *s, const uint8_t *data, int size)
         s->npresents = get_bits(&s->gb, 3) + 1;
         if (s->npresents > 1) {
             if (s->avctx)
-                avpriv_request_sample(s->avctx, "%d audio presentations", s->npresents);
+                av_log_request_sample(s->avctx, "%d audio presentations", s->npresents);
             return AVERROR_PATCHWELCOME;
         }
 
@@ -440,7 +440,7 @@ int ff_dca_exss_parse(DCAExssParser *s, const uint8_t *data, int size)
         s->nassets = get_bits(&s->gb, 3) + 1;
         if (s->nassets > 1) {
             if (s->avctx)
-                avpriv_request_sample(s->avctx, "%d audio assets", s->nassets);
+                av_log_request_sample(s->avctx, "%d audio assets", s->nassets);
             return AVERROR_PATCHWELCOME;
         }
 

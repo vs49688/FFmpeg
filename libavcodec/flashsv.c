@@ -295,11 +295,11 @@ static int flashsv_decode_frame(AVCodecContext *avctx, void *data,
     if (s->ver == 2) {
         skip_bits(&gb, 6);
         if (get_bits1(&gb)) {
-            avpriv_request_sample(avctx, "iframe");
+            av_log_request_sample(avctx, "iframe");
             return AVERROR_PATCHWELCOME;
         }
         if (get_bits1(&gb)) {
-            avpriv_request_sample(avctx, "Custom palette");
+            av_log_request_sample(avctx, "Custom palette");
             return AVERROR_PATCHWELCOME;
         }
     }
@@ -448,7 +448,7 @@ static int flashsv_decode_frame(AVCodecContext *avctx, void *data,
                         return AVERROR_INVALIDDATA;
                     }
                     size -= 2;
-                    avpriv_request_sample(avctx, "zlibprime_curr");
+                    av_log_request_sample(avctx, "zlibprime_curr");
                     return AVERROR_PATCHWELCOME;
                 }
                 if (!s->blocks && (s->zlibprime_curr || s->zlibprime_prev)) {

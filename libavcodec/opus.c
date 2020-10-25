@@ -322,7 +322,7 @@ av_cold int ff_opus_parse_extradata(AVCodecContext *avctx,
 
     version = extradata[8];
     if (version > 15) {
-        avpriv_request_sample(avctx, "Extradata version %d", version);
+        av_log_request_sample(avctx, "Extradata version %d", version);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -395,7 +395,7 @@ av_cold int ff_opus_parse_extradata(AVCodecContext *avctx,
 
         channel_map = extradata + 21;
     } else {
-        avpriv_request_sample(avctx, "Mapping type %d", map_type);
+        av_log_request_sample(avctx, "Mapping type %d", map_type);
         return AVERROR_PATCHWELCOME;
     }
 

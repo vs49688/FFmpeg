@@ -983,7 +983,7 @@ static int process_frame_obj(SANMVideoContext *ctx)
     case 47:
         return old_codec47(ctx, top, left, w, h);
     default:
-        avpriv_request_sample(ctx->avctx, "Subcodec %d", codec);
+        av_log_request_sample(ctx->avctx, "Subcodec %d", codec);
         return AVERROR_PATCHWELCOME;
     }
 }
@@ -1007,7 +1007,7 @@ static int decode_0(SANMVideoContext *ctx)
 
 static int decode_nop(SANMVideoContext *ctx)
 {
-    avpriv_request_sample(ctx->avctx, "Unknown/unsupported compression type");
+    av_log_request_sample(ctx->avctx, "Unknown/unsupported compression type");
     return AVERROR_PATCHWELCOME;
 }
 
@@ -1500,7 +1500,7 @@ static int decode_frame(AVCodecContext *avctx, void *data,
                 return ret;
             }
         } else {
-            avpriv_request_sample(avctx, "Subcodec %d", header.codec);
+            av_log_request_sample(avctx, "Subcodec %d", header.codec);
             return AVERROR_PATCHWELCOME;
         }
 

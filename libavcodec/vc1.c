@@ -453,7 +453,7 @@ static int decode_sequence_header_adv(VC1Context *v, GetBitContext *gb)
         } else {
             if (v->s.avctx->width  > v->max_coded_width ||
                 v->s.avctx->height > v->max_coded_height) {
-                avpriv_request_sample(v->s.avctx, "Huge resolution");
+                av_log_request_sample(v->s.avctx, "Huge resolution");
             } else
                 av_reduce(&v->s.avctx->sample_aspect_ratio.num,
                       &v->s.avctx->sample_aspect_ratio.den,

@@ -64,7 +64,7 @@ static int exif_add_metadata(void *logctx, int count, int type,
     case TIFF_SLONG    :
     case TIFF_LONG     : return ff_tadd_long_metadata(count, name, sep, gb, le, metadata);
     default:
-        avpriv_request_sample(logctx, "TIFF tag type (%u)", type);
+        av_log_request_sample(logctx, "TIFF tag type (%u)", type);
         return 0;
     };
 }

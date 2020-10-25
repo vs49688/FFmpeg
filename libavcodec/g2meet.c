@@ -560,7 +560,7 @@ static uint32_t epic_decode_pixel_pred(ePICContext *dc, int x, int y,
     }
 
     if (R<0 || G<0 || B<0 || R > 255 || G > 255 || B > 255) {
-        avpriv_request_sample(NULL, "RGB %d %d %d (out of range)", R, G, B);
+        av_log_request_sample(NULL, "RGB %d %d %d (out of range)", R, G, B);
         return 0;
     }
 
@@ -918,7 +918,7 @@ static int epic_jb_decode_tile(G2MContext *c, int tile_x, int tile_y,
     aheight     = FFALIGN(tile_height, 16);
 
     if (tile_width > (1 << FF_ARRAY_ELEMS(c->ec.prev_row_rung))) {
-        avpriv_request_sample(avctx, "large tile width");
+        av_log_request_sample(avctx, "large tile width");
         return AVERROR_INVALIDDATA;
     }
 
@@ -1497,7 +1497,7 @@ static int g2m_decode_frame(AVCodecContext *avctx, void *data,
                     goto header_fail;
                 }
             } else {
-                avpriv_request_sample(avctx, "bpp=%d", c->bpp);
+                av_log_request_sample(avctx, "bpp=%d", c->bpp);
                 ret = AVERROR_PATCHWELCOME;
                 goto header_fail;
             }

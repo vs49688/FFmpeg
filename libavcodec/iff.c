@@ -181,7 +181,7 @@ static int cmap_read_palette(AVCodecContext *avctx, uint32_t *pal)
     }
     if (s->masking == MASK_HAS_MASK) {
         if ((1 << avctx->bits_per_coded_sample) < count) {
-            avpriv_request_sample(avctx, "overlapping mask");
+            av_log_request_sample(avctx, "overlapping mask");
             return AVERROR_PATCHWELCOME;
         }
         memcpy(pal + (1 << avctx->bits_per_coded_sample), pal, count * 4);
@@ -421,7 +421,7 @@ static av_cold int decode_init(AVCodecContext *avctx)
             } else if (avctx->bits_per_coded_sample == 32) {
                 avctx->pix_fmt = AV_PIX_FMT_BGR32;
             } else {
-                avpriv_request_sample(avctx, "unknown bits_per_coded_sample");
+                av_log_request_sample(avctx, "unknown bits_per_coded_sample");
                 return AVERROR_PATCHWELCOME;
             }
         }
@@ -1516,7 +1516,7 @@ static void decode_delta_l(uint8_t *dst,
 static int unsupported(AVCodecContext *avctx)
 {
     IffContext *s = avctx->priv_data;
-    avpriv_request_sample(avctx, "bitmap (compression 0x%0x, bpp %i, ham %i, interlaced %i)", s->compression, s->bpp, s->ham, s->is_interlaced);
+    av_log_request_sample(avctx, "bitmap (compression 0x%0x, bpp %i, ham %i, interlaced %i)", s->compression, s->bpp, s->ham, s->is_interlaced);
     return AVERROR_INVALIDDATA;
 }
 

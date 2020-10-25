@@ -2689,17 +2689,17 @@ static int vp3_decode_frame(AVCodecContext *avctx,
                 mb_width  = get_bits(&gb, 8);
                 if (mb_height != s->macroblock_height ||
                     mb_width != s->macroblock_width)
-                    avpriv_request_sample(s->avctx, "macroblock dimension mismatch");
+                    av_log_request_sample(s->avctx, "macroblock dimension mismatch");
 
                 mb_width_mul = get_bits(&gb, 5);
                 mb_width_div = get_bits(&gb, 3);
                 mb_height_mul = get_bits(&gb, 5);
                 mb_height_div = get_bits(&gb, 3);
                 if (mb_width_mul != 1 || mb_width_div != 1 || mb_height_mul != 1 || mb_height_div != 1)
-                    avpriv_request_sample(s->avctx, "unexpected macroblock dimension multipler/divider");
+                    av_log_request_sample(s->avctx, "unexpected macroblock dimension multipler/divider");
 
                 if (get_bits(&gb, 2))
-                    avpriv_request_sample(s->avctx, "unknown bits");
+                    av_log_request_sample(s->avctx, "unknown bits");
             }
 #endif
         }
@@ -2863,7 +2863,7 @@ static int theora_decode_header(AVCodecContext *avctx, GetBitContext *gb)
     av_log(avctx, AV_LOG_DEBUG, "Theora bitstream version %X\n", s->theora);
     if (!s->theora) {
         s->theora = 1;
-        avpriv_request_sample(s->avctx, "theora 0");
+        av_log_request_sample(s->avctx, "theora 0");
     }
 
     /* 3.2.0 aka alpha3 has the same frame orientation as original vp3

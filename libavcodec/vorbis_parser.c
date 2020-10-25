@@ -149,7 +149,7 @@ static int parse_setup_header(AVVorbisParseContext *s,
      * we may need to approach this the long way and parse the whole Setup
      * header, but I hope very much that it never comes to that. */
     if (last_mode_count > 2) {
-        avpriv_request_sample(s,
+        av_log_request_sample(s,
                               "%d modes (either a false positive or a "
                               "sample from an unknown encoder)",
                               last_mode_count);

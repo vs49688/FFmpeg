@@ -124,7 +124,7 @@ static int hq_decode_frame(HQContext *ctx, AVFrame *pic,
 
     if ((unsigned)prof_num >= NUM_HQ_PROFILES) {
         profile = &ff_hq_profile[0];
-        avpriv_request_sample(ctx->avctx, "HQ Profile %d", prof_num);
+        av_log_request_sample(ctx->avctx, "HQ Profile %d", prof_num);
     } else {
         profile = &ff_hq_profile[prof_num];
         av_log(ctx->avctx, AV_LOG_VERBOSE, "HQ Profile %d\n", prof_num);

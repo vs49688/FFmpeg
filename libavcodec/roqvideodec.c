@@ -172,7 +172,7 @@ static av_cold int roq_decode_init(AVCodecContext *avctx)
     s->avctx = avctx;
 
     if (avctx->width % 16 || avctx->height % 16) {
-        avpriv_request_sample(avctx, "Dimensions not being a multiple of 16");
+        av_log_request_sample(avctx, "Dimensions not being a multiple of 16");
         return AVERROR_PATCHWELCOME;
     }
 

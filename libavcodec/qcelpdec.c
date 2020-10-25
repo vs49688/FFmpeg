@@ -639,7 +639,7 @@ static qcelp_packet_rate determine_bitrate(AVCodecContext *avctx,
 
     if (bitrate == SILENCE) {
         // FIXME: Remove this warning when tested with samples.
-        avpriv_request_sample(avctx, "Blank frame handling");
+        av_log_request_sample(avctx, "Blank frame handling");
     }
     return bitrate;
 }

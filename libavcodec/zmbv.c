@@ -443,15 +443,15 @@ static int decode_frame(AVCodecContext *avctx, void *data, int *got_frame, AVPac
                "Flags=%X ver=%i.%i comp=%i fmt=%i blk=%ix%i\n",
                c->flags,hi_ver,lo_ver,c->comp,c->fmt,c->bw,c->bh);
         if (hi_ver != 0 || lo_ver != 1) {
-            avpriv_request_sample(avctx, "Version %i.%i", hi_ver, lo_ver);
+            av_log_request_sample(avctx, "Version %i.%i", hi_ver, lo_ver);
             return AVERROR_PATCHWELCOME;
         }
         if (c->bw == 0 || c->bh == 0) {
-            avpriv_request_sample(avctx, "Block size %ix%i", c->bw, c->bh);
+            av_log_request_sample(avctx, "Block size %ix%i", c->bw, c->bh);
             return AVERROR_PATCHWELCOME;
         }
         if (c->comp != 0 && c->comp != 1) {
-            avpriv_request_sample(avctx, "Compression type %i", c->comp);
+            av_log_request_sample(avctx, "Compression type %i", c->comp);
             return AVERROR_PATCHWELCOME;
         }
 
@@ -488,7 +488,7 @@ static int decode_frame(AVCodecContext *avctx, void *data, int *got_frame, AVPac
             break;
         default:
             c->decode_xor = NULL;
-            avpriv_request_sample(avctx, "Format %i", c->fmt);
+            av_log_request_sample(avctx, "Format %i", c->fmt);
             return AVERROR_PATCHWELCOME;
         }
 

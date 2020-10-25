@@ -392,7 +392,7 @@ static int load_buffer(AVCodecContext *avctx,
     }
 
     if (!*nslices) {
-        avpriv_request_sample(avctx, "%d slices for %dx%d", *nslices,
+        av_log_request_sample(avctx, "%d slices for %dx%d", *nslices,
                               avctx->width, avctx->height);
         return AVERROR_PATCHWELCOME;
     }
@@ -480,7 +480,7 @@ static int dxtory_decode_v2(AVCodecContext *avctx, AVFrame *pic,
     }
 
     if (avctx->height - line) {
-        avpriv_request_sample(avctx, "Not enough slice data available");
+        av_log_request_sample(avctx, "Not enough slice data available");
     }
 
     do_vflip(avctx, pic, vflipped);
@@ -862,7 +862,7 @@ static int decode_frame(AVCodecContext *avctx, void *data, int *got_frame,
         ret = dxtory_decode_v2_565(avctx, pic, src + 16, avpkt->size - 16, 0, vflipped);
         break;
     default:
-        avpriv_request_sample(avctx, "Frame header %"PRIX32, type);
+        av_log_request_sample(avctx, "Frame header %"PRIX32, type);
         return AVERROR_PATCHWELCOME;
     }
 

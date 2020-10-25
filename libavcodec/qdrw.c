@@ -323,10 +323,10 @@ static int decode_frame(AVCodecContext *avctx,
     /* version 1 is identified by 0x1101
      * it uses byte-aligned opcodes rather than word-aligned */
     if (ver == 1) {
-        avpriv_request_sample(avctx, "QuickDraw version 1");
+        av_log_request_sample(avctx, "QuickDraw version 1");
         return AVERROR_PATCHWELCOME;
     } else if (ver != 2) {
-        avpriv_request_sample(avctx, "QuickDraw version unknown (%X)", bytestream2_get_be32(&gbc));
+        av_log_request_sample(avctx, "QuickDraw version unknown (%X)", bytestream2_get_be32(&gbc));
         return AVERROR_PATCHWELCOME;
     }
 
@@ -452,7 +452,7 @@ static int decode_frame(AVCodecContext *avctx,
                 pack_type = bppcnt;
 
             if (pack_type != 3 && pack_type != 4) {
-                avpriv_request_sample(avctx, "Pack type %d", pack_type);
+                av_log_request_sample(avctx, "Pack type %d", pack_type);
                 return AVERROR_PATCHWELCOME;
             }
             if (bytestream2_get_bytes_left(&gbc) < 30)

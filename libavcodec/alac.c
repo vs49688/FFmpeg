@@ -294,7 +294,7 @@ static int decode_element(AVCodecContext *avctx, AVFrame *frame, int ch_index,
         int rice_history_mult[2];
 
         if (!alac->rice_limit) {
-            avpriv_request_sample(alac->avctx,
+            av_log_request_sample(alac->avctx,
                                   "Compression with rice limit 0");
             return AVERROR(ENOSYS);
         }
@@ -570,7 +570,7 @@ static av_cold int alac_decode_init(AVCodecContext * avctx)
     case 24:
     case 32: avctx->sample_fmt = AV_SAMPLE_FMT_S32P;
              break;
-    default: avpriv_request_sample(avctx, "Sample depth %d", alac->sample_size);
+    default: av_log_request_sample(avctx, "Sample depth %d", alac->sample_size);
              return AVERROR_PATCHWELCOME;
     }
     avctx->bits_per_raw_sample = alac->sample_size;

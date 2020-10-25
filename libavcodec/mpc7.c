@@ -58,7 +58,7 @@ static av_cold int mpc7_decode_init(AVCodecContext * avctx)
 
     /* Musepack SV7 is always stereo */
     if (avctx->channels != 2) {
-        avpriv_request_sample(avctx, "%d channels", avctx->channels);
+        av_log_request_sample(avctx, "%d channels", avctx->channels);
         return AVERROR_PATCHWELCOME;
     }
 

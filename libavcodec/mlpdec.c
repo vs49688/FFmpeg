@@ -350,7 +350,7 @@ static int read_major_sync(MLPDecodeContext *m, GetBitContext *gb)
         return AVERROR_INVALIDDATA;
     }
     if (mh.num_substreams > MAX_SUBSTREAMS) {
-        avpriv_request_sample(m->avctx,
+        av_log_request_sample(m->avctx,
                               "%d substreams (more than the "
                               "maximum supported by the decoder)",
                               mh.num_substreams);
@@ -389,7 +389,7 @@ static int read_major_sync(MLPDecodeContext *m, GetBitContext *gb)
      * major sync. */
     if (m->avctx->codec_id == AV_CODEC_ID_MLP) {
         if (mh.stream_type != 0xbb) {
-            avpriv_request_sample(m->avctx,
+            av_log_request_sample(m->avctx,
                         "unexpected stream_type %X in MLP",
                         mh.stream_type);
             return AVERROR_PATCHWELCOME;
@@ -399,7 +399,7 @@ static int read_major_sync(MLPDecodeContext *m, GetBitContext *gb)
         m->substream[substr].mask = mh.channel_layout_mlp;
     } else {
         if (mh.stream_type != 0xba) {
-            avpriv_request_sample(m->avctx,
+            av_log_request_sample(m->avctx,
                         "unexpected stream_type %X in !MLP",
                         mh.stream_type);
             return AVERROR_PATCHWELCOME;
@@ -521,7 +521,7 @@ static int read_restart_header(MLPDecodeContext *m, GetBitContext *gbp,
     /* This should happen for TrueHD streams with >6 channels and MLP's noise
      * type. It is not yet known if this is allowed. */
     if (max_channel > MAX_MATRIX_CHANNEL_MLP && !noise_type) {
-        avpriv_request_sample(m->avctx,
+        av_log_request_sample(m->avctx,
                               "%d channels (more than the "
                               "maximum supported by the decoder)",
                               max_channel + 2);
@@ -577,7 +577,7 @@ static int read_restart_header(MLPDecodeContext *m, GetBitContext *gbp,
                                                             channel);
         }
         if (ch_assign < 0 || ch_assign > s->max_matrix_channel) {
-            avpriv_request_sample(m->avctx,
+            av_log_request_sample(m->avctx,
                                   "Assignment of matrix channel %d to invalid output channel %d",
                                   ch, ch_assign);
             return AVERROR_PATCHWELCOME;
@@ -873,7 +873,7 @@ static int read_decoding_params(MLPDecodeContext *m, GetBitContext *gbp,
             for (ch = 0; ch <= s->max_matrix_channel; ch++) {
                 s->output_shift[ch] = get_sbits(gbp, 4);
                 if (s->output_shift[ch] < 0) {
-                    avpriv_request_sample(m->avctx, "Negative output_shift");
+                    av_log_request_sample(m->avctx, "Negative output_shift");
                     s->output_shift[ch] = 0;
                 }
             }
@@ -961,7 +961,7 @@ static int read_block_data(MLPDecodeContext *m, GetBitContext *gbp,
     if (s->data_check_present) {
         expected_stream_pos  = get_bits_count(gbp);
         expected_stream_pos += get_bits(gbp, 16);
-        avpriv_request_sample(m->avctx,
+        av_log_request_sample(m->avctx,
                               "Substreams with VLC block size check info");
     }
 

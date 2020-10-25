@@ -131,7 +131,7 @@ static int chs_parse_header(DCAXllDecoder *s, DCAXllChSet *c, DCAExssAsset *asse
     // Number of channels in the channel set
     c->nchannels = get_bits(&s->gb, 4) + 1;
     if (c->nchannels > DCA_XLL_CHANNELS_MAX) {
-        avpriv_request_sample(s->avctx, "%d XLL channels", c->nchannels);
+        av_log_request_sample(s->avctx, "%d XLL channels", c->nchannels);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -144,7 +144,7 @@ static int chs_parse_header(DCAXllDecoder *s, DCAXllChSet *c, DCAExssAsset *asse
     // Storage unit width
     c->storage_bit_res = get_bits(&s->gb, 5) + 1;
     if (c->storage_bit_res != 16 && c->storage_bit_res != 20 && c->storage_bit_res != 24) {
-        avpriv_request_sample(s->avctx, "%d-bit XLL storage resolution", c->storage_bit_res);
+        av_log_request_sample(s->avctx, "%d-bit XLL storage resolution", c->storage_bit_res);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -156,19 +156,19 @@ static int chs_parse_header(DCAXllDecoder *s, DCAXllChSet *c, DCAExssAsset *asse
     // Original sampling frequency
     c->freq = ff_dca_sampling_freqs[get_bits(&s->gb, 4)];
     if (c->freq > 192000) {
-        avpriv_request_sample(s->avctx, "%d Hz XLL sampling frequency", c->freq);
+        av_log_request_sample(s->avctx, "%d Hz XLL sampling frequency", c->freq);
         return AVERROR_PATCHWELCOME;
     }
 
     // Sampling frequency modifier
     if (get_bits(&s->gb, 2)) {
-        avpriv_request_sample(s->avctx, "XLL sampling frequency modifier");
+        av_log_request_sample(s->avctx, "XLL sampling frequency modifier");
         return AVERROR_PATCHWELCOME;
     }
 
     // Which replacement set this channel set is member of
     if (get_bits(&s->gb, 2)) {
-        avpriv_request_sample(s->avctx, "XLL replacement set");
+        av_log_request_sample(s->avctx, "XLL replacement set");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -198,7 +198,7 @@ static int chs_parse_header(DCAXllDecoder *s, DCAXllChSet *c, DCAExssAsset *asse
         // Whether the channel set is part of a hierarchy
         c->hier_chset = get_bits1(&s->gb);
         if (!c->hier_chset && s->nchsets != 1) {
-            avpriv_request_sample(s->avctx, "XLL channel set outside of hierarchy");
+            av_log_request_sample(s->avctx, "XLL channel set outside of hierarchy");
             return AVERROR_PATCHWELCOME;
         }
 
@@ -208,7 +208,7 @@ static int chs_parse_header(DCAXllDecoder *s, DCAXllChSet *c, DCAExssAsset *asse
 
         // Channel mask enabled
         if (!get_bits1(&s->gb)) {
-            avpriv_request_sample(s->avctx, "Disabled XLL channel mask");
+            av_log_request_sample(s->avctx, "Disabled XLL channel mask");
             return AVERROR_PATCHWELCOME;
         }
 
@@ -226,7 +226,7 @@ static int chs_parse_header(DCAXllDecoder *s, DCAXllChSet *c, DCAExssAsset *asse
     } else {
         // Mapping coeffs present flag
         if (c->nchannels != 2 || s->nchsets != 1 || get_bits1(&s->gb)) {
-            avpriv_request_sample(s->avctx, "Custom XLL channel to speaker mapping");
+            av_log_request_sample(s->avctx, "Custom XLL channel to speaker mapping");
             return AVERROR_PATCHWELCOME;
         }
 
@@ -243,7 +243,7 @@ static int chs_parse_header(DCAXllDecoder *s, DCAXllChSet *c, DCAExssAsset *asse
     if (c->freq > 96000) {
         // Extra frequency bands flag
         if (get_bits1(&s->gb)) {
-            avpriv_request_sample(s->avctx, "Extra XLL frequency bands");
+            av_log_request_sample(s->avctx, "Extra XLL frequency bands");
             return AVERROR_PATCHWELCOME;
         }
         c->nfreqbands = 2;
@@ -259,7 +259,7 @@ static int chs_parse_header(DCAXllDecoder *s, DCAXllChSet *c, DCAExssAsset *asse
     if (c != p && (c->nfreqbands != p->nfreqbands || c->freq != p->freq
                    || c->pcm_bit_res != p->pcm_bit_res
                    || c->storage_bit_res != p->storage_bit_res)) {
-        avpriv_request_sample(s->avctx, "Different XLL audio characteristics");
+        av_log_request_sample(s->avctx, "Different XLL audio characteristics");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -775,7 +775,7 @@ static int parse_common_header(DCAXllDecoder *s)
     // Version number
     stream_ver = get_bits(&s->gb, 4) + 1;
     if (stream_ver > 1) {
-        avpriv_request_sample(s->avctx, "XLL stream version %d", stream_ver);
+        av_log_request_sample(s->avctx, "XLL stream version %d", stream_ver);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -802,7 +802,7 @@ static int parse_common_header(DCAXllDecoder *s)
     // Number of channels sets per frame
     s->nchsets = get_bits(&s->gb, 4) + 1;
     if (s->nchsets > DCA_XLL_CHSETS_MAX) {
-        avpriv_request_sample(s->avctx, "%d XLL channel sets", s->nchsets);
+        av_log_request_sample(s->avctx, "%d XLL channel sets", s->nchsets);
         return AVERROR_PATCHWELCOME;
     }
 

@@ -548,7 +548,7 @@ static int output_configure(AACContext *ac,
         int id =           layout_map[i][1];
         id_map[type][id] = type_counts[type]++;
         if (id_map[type][id] >= MAX_ELEM_ID) {
-            avpriv_request_sample(ac->avctx, "Too large remapped id");
+            av_log_request_sample(ac->avctx, "Too large remapped id");
             return AVERROR_PATCHWELCOME;
         }
     }
@@ -1003,7 +1003,7 @@ static int decode_eld_specific_config(AACContext *ac, AVCodecContext *avctx,
     m4ac->sbr = 0;
 #if USE_FIXED
     if (get_bits1(gb)) { // frameLengthFlag
-        avpriv_request_sample(avctx, "960/120 MDCT window");
+        av_log_request_sample(avctx, "960/120 MDCT window");
         return AVERROR_PATCHWELCOME;
     }
 #else
@@ -1597,7 +1597,7 @@ static int decode_scalefactors(AACContext *ac, INTFLOAT sf[120], GetBitContext *
                     offset[2] += get_vlc2(gb, vlc_scalefactors.table, 7, 3) - SCALE_DIFF_ZERO;
                     clipped_offset = av_clip(offset[2], -155, 100);
                     if (offset[2] != clipped_offset) {
-                        avpriv_request_sample(ac->avctx,
+                        av_log_request_sample(ac->avctx,
                                               "If you heard an audible artifact, there may be a bug in the decoder. "
                                               "Clipped intensity stereo position (%d -> %d)",
                                               offset[2], clipped_offset);
@@ -1616,7 +1616,7 @@ static int decode_scalefactors(AACContext *ac, INTFLOAT sf[120], GetBitContext *
                         offset[1] += get_vlc2(gb, vlc_scalefactors.table, 7, 3) - SCALE_DIFF_ZERO;
                     clipped_offset = av_clip(offset[1], -100, 155);
                     if (offset[1] != clipped_offset) {
-                        avpriv_request_sample(ac->avctx,
+                        av_log_request_sample(ac->avctx,
                                               "If you heard an audible artifact, there may be a bug in the decoder. "
                                               "Clipped noise gain (%d -> %d)",
                                               offset[1], clipped_offset);
@@ -3170,7 +3170,7 @@ static int aac_decode_er_frame(AVCodecContext *avctx, void *data,
     ac->tags_mapped = 0;
 
     if (chan_config < 0 || (chan_config >= 8 && chan_config < 11) || chan_config >= 13) {
-        avpriv_request_sample(avctx, "Unknown ER channel configuration %d",
+        av_log_request_sample(avctx, "Unknown ER channel configuration %d",
                               chan_config);
         return AVERROR_INVALIDDATA;
     }

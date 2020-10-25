@@ -309,7 +309,7 @@ static int ff_eac3_parse_header(AC3DecodeContext *s)
         /* only decode substream with id=0. skip any additional substreams. */
         if (!s->eac3_subsbtreamid_found) {
             s->eac3_subsbtreamid_found = 1;
-            avpriv_request_sample(s->avctx, "Additional substreams");
+            av_log_request_sample(s->avctx, "Additional substreams");
         }
         return AAC_AC3_PARSE_ERROR_FRAME_TYPE;
     }
@@ -319,7 +319,7 @@ static int ff_eac3_parse_header(AC3DecodeContext *s)
            rates in bit allocation.  The best assumption would be that it is
            handled like AC-3 DolbyNet, but we cannot be sure until we have a
            sample which utilizes this feature. */
-        avpriv_request_sample(s->avctx, "Reduced sampling rate");
+        av_log_request_sample(s->avctx, "Reduced sampling rate");
         return AVERROR_PATCHWELCOME;
     }
     skip_bits(gbc, 5); // skip bitstream id
@@ -610,7 +610,7 @@ static int ff_eac3_parse_header(AC3DecodeContext *s)
            It is likely the offset of each block within the frame. */
         int block_start_bits = (s->num_blocks-1) * (4 + av_log2(s->frame_size-2));
         skip_bits_long(gbc, block_start_bits);
-        avpriv_request_sample(s->avctx, "Block start info");
+        av_log_request_sample(s->avctx, "Block start info");
     }
 
     /* syntax state initialization */

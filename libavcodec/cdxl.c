@@ -263,7 +263,7 @@ static int cdxl_decode_frame(AVCodecContext *avctx, void *data,
     if (c->bpp < 1)
         return AVERROR_INVALIDDATA;
     if (c->format != BIT_PLANAR && c->format != BIT_LINE && c->format != CHUNKY) {
-        avpriv_request_sample(avctx, "Pixel format 0x%0x", c->format);
+        av_log_request_sample(avctx, "Pixel format 0x%0x", c->format);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -287,7 +287,7 @@ static int cdxl_decode_frame(AVCodecContext *avctx, void *data,
                !c->palette_size) {
         avctx->pix_fmt = AV_PIX_FMT_RGB24;
     } else {
-        avpriv_request_sample(avctx, "Encoding %d, bpp %d and format 0x%x",
+        av_log_request_sample(avctx, "Encoding %d, bpp %d and format 0x%x",
                               encoding, c->bpp, c->format);
         return AVERROR_PATCHWELCOME;
     }

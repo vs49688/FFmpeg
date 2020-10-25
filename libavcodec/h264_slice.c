@@ -1542,7 +1542,7 @@ static int h264_field_start(H264Context *h, const H264SliceContext *sl,
                     h->droppable         = last_pic_droppable;
                     return AVERROR_INVALIDDATA;
                 } else if (last_pic_droppable != h->droppable) {
-                    avpriv_request_sample(h->avctx,
+                    av_log_request_sample(h->avctx,
                                           "Found reference and non-reference fields in the same frame, which");
                     h->picture_structure = last_pic_structure;
                     h->droppable         = last_pic_droppable;

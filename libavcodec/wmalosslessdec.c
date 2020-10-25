@@ -191,7 +191,7 @@ static av_cold int decode_init(AVCodecContext *avctx)
 
     av_assert0(avctx->channels >= 0);
     if (avctx->channels > WMALL_MAX_CHANNELS) {
-        avpriv_request_sample(avctx,
+        av_log_request_sample(avctx,
                               "More than " AV_STRINGIFY(WMALL_MAX_CHANNELS) " channels");
         return AVERROR_PATCHWELCOME;
     }
@@ -225,7 +225,7 @@ static av_cold int decode_init(AVCodecContext *avctx)
         ff_dlog(avctx, "\n");
 
     } else {
-        avpriv_request_sample(avctx, "Unsupported extradata size");
+        av_log_request_sample(avctx, "Unsupported extradata size");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -467,7 +467,7 @@ static int decode_cdlms(WmallDecodeCtx *s)
             if(s->cdlms[c][i].order & 8 && s->bits_per_sample == 16) {
                 static int warned;
                 if(!warned)
-                    avpriv_request_sample(s->avctx, "CDLMS of order %d",
+                    av_log_request_sample(s->avctx, "CDLMS of order %d",
                                           s->cdlms[c][i].order);
                 warned = 1;
             }
@@ -882,7 +882,7 @@ static int decode_subframe(WmallDecodeCtx *s)
 
         s->do_arith_coding    = get_bits1(&s->gb);
         if (s->do_arith_coding) {
-            avpriv_request_sample(s->avctx, "Arithmetic coding");
+            av_log_request_sample(s->avctx, "Arithmetic coding");
             return AVERROR_PATCHWELCOME;
         }
         s->do_ac_filter       = get_bits1(&s->gb);
@@ -925,7 +925,7 @@ static int decode_subframe(WmallDecodeCtx *s)
             s->do_lpc = get_bits1(&s->gb);
             if (s->do_lpc) {
                 decode_lpc(s);
-                avpriv_request_sample(s->avctx, "Expect wrong output since "
+                av_log_request_sample(s->avctx, "Expect wrong output since "
                                       "inverse LPC filter");
             }
         } else
@@ -1152,7 +1152,7 @@ static void save_bits(WmallDecodeCtx *s, GetBitContext* gb, int len,
     buflen = (s->num_saved_bits + len + 8) >> 3;
 
     if (len <= 0 || buflen > s->max_frame_size) {
-        avpriv_request_sample(s->avctx, "Too small input buffer");
+        av_log_request_sample(s->avctx, "Too small input buffer");
         s->packet_loss = 1;
         s->num_saved_bits = 0;
         return;
@@ -1209,7 +1209,7 @@ static int decode_packet(AVCodecContext *avctx, void *data, int *got_frame_ptr,
         skip_bits(gb, 1);   // Skip seekable_frame_in_packet, currently unused
         spliced_packet = get_bits1(gb);
         if (spliced_packet)
-            avpriv_request_sample(avctx, "Bitstream splicing");
+            av_log_request_sample(avctx, "Bitstream splicing");
 
         /* get number of bits that need to be added to the previous frame */
         num_bits_prev_frame = get_bits(gb, s->log2_frame_size);

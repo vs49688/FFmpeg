@@ -196,7 +196,7 @@ static int parse_coding_header(DCACoreDecoder *s, enum HeaderType header, int xc
         // Number of channels in a channel set
         nchannels = get_bits(&s->gb, 3) + 1;
         if (nchannels > DCA_XXCH_CHANNELS_MAX) {
-            avpriv_request_sample(s->avctx, "%d XXCH channels", nchannels);
+            av_log_request_sample(s->avctx, "%d XXCH channels", nchannels);
             return AVERROR_PATCHWELCOME;
         }
         s->nchannels = ff_dca_channels[s->audio_mode] + nchannels;
@@ -888,7 +888,7 @@ static int parse_xxch_frame(DCACoreDecoder *s)
     // Number of channel sets
     xxch_nchsets = get_bits(&s->gb, 2) + 1;
     if (xxch_nchsets > 1) {
-        avpriv_request_sample(s->avctx, "%d XXCH channel sets", xxch_nchsets);
+        av_log_request_sample(s->avctx, "%d XXCH channel sets", xxch_nchsets);
         return AVERROR_PATCHWELCOME;
     }
 

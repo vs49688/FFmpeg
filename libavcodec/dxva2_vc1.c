@@ -336,7 +336,7 @@ static int dxva2_vc1_decode_slice(AVCodecContext *avctx,
     unsigned position;
 
     if (ctx_pic->slice_count >= MAX_SLICES) {
-        avpriv_request_sample(avctx, "%d slices in dxva2",
+        av_log_request_sample(avctx, "%d slices in dxva2",
                               ctx_pic->slice_count);
         return -1;
     }

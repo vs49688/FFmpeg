@@ -651,7 +651,7 @@ static int decode_nal_units(H264Context *h, const uint8_t *buf, int buf_size)
         case H264_NAL_DPA:
         case H264_NAL_DPB:
         case H264_NAL_DPC:
-            avpriv_request_sample(avctx, "data partitioning");
+            av_log_request_sample(avctx, "data partitioning");
             break;
         case H264_NAL_SEI:
             ret = ff_h264_sei_decode(&h->sei, &nal->gb, &h->ps, avctx);

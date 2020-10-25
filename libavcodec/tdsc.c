@@ -303,7 +303,7 @@ static int tdsc_load_cursor(AVCodecContext *avctx)
         }
         break;
     default:
-        avpriv_request_sample(avctx, "Cursor format %08x", cursor_fmt);
+        av_log_request_sample(avctx, "Cursor format %08x", cursor_fmt);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -513,7 +513,7 @@ static int tdsc_parse_dtsm(AVCodecContext *avctx)
                 return ret;
         }
     } else {
-        avpriv_request_sample(avctx, "Cursor action %d", action);
+        av_log_request_sample(avctx, "Cursor action %d", action);
     }
 
     return 0;

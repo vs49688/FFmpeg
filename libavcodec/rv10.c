@@ -265,7 +265,7 @@ static int rv10_decode_picture_header(MpegEncContext *s)
     ff_dlog(s->avctx, "pict_type=%d pb_frame=%d\n", s->pict_type, pb_frame);
 
     if (pb_frame) {
-        avpriv_request_sample(s->avctx, "PB-frame");
+        av_log_request_sample(s->avctx, "PB-frame");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -509,7 +509,7 @@ static av_cold int rv10_decode_init(AVCodecContext *avctx)
         break;
     default:
         av_log(s->avctx, AV_LOG_ERROR, "unknown header %X\n", rv->sub_id);
-        avpriv_request_sample(avctx, "RV1/2 version");
+        av_log_request_sample(avctx, "RV1/2 version");
         return AVERROR_PATCHWELCOME;
     }
 

@@ -81,7 +81,7 @@ static av_cold int decode_init(AVCodecContext *avctx)
     int i;
 
     if (avctx->channels > DST_MAX_CHANNELS) {
-        avpriv_request_sample(avctx, "Channel count %d", avctx->channels);
+        av_log_request_sample(avctx, "Channel count %d", avctx->channels);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -275,17 +275,17 @@ static int decode_frame(AVCodecContext *avctx, void *data,
     /* Segmentation (10.4, 10.5, 10.6) */
 
     if (!get_bits1(gb)) {
-        avpriv_request_sample(avctx, "Not Same Segmentation");
+        av_log_request_sample(avctx, "Not Same Segmentation");
         return AVERROR_PATCHWELCOME;
     }
 
     if (!get_bits1(gb)) {
-        avpriv_request_sample(avctx, "Not Same Segmentation For All Channels");
+        av_log_request_sample(avctx, "Not Same Segmentation For All Channels");
         return AVERROR_PATCHWELCOME;
     }
 
     if (!get_bits1(gb)) {
-        avpriv_request_sample(avctx, "Not End Of Channel Segmentation");
+        av_log_request_sample(avctx, "Not End Of Channel Segmentation");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -300,7 +300,7 @@ static int decode_frame(AVCodecContext *avctx, void *data,
         s->probs.elements = s->fsets.elements;
         memcpy(map_ch_to_pelem, map_ch_to_felem, sizeof(map_ch_to_felem));
     } else {
-        avpriv_request_sample(avctx, "Not Same Mapping");
+        av_log_request_sample(avctx, "Not Same Mapping");
         if ((ret = read_map(gb, &s->probs, map_ch_to_pelem, channels)) < 0)
             return ret;
     }

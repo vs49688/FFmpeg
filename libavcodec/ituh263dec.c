@@ -319,7 +319,7 @@ static int h263p_decode_umotion(MpegEncContext * s, int pred)
       code <<= 1;
       code += get_bits1(&s->gb);
       if (code >= 32768) {
-          avpriv_request_sample(s->avctx, "Huge DMV");
+          av_log_request_sample(s->avctx, "Huge DMV");
           return 0xffff;
       }
    }

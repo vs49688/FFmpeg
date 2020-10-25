@@ -362,7 +362,7 @@ static int read_stream_mux_config(struct LATMContext *latmctx,
         skip_bits(gb, 6);                       // numSubFrames
         // numPrograms
         if (get_bits(gb, 4)) {                  // numPrograms
-            avpriv_request_sample(latmctx->aac_ctx.avctx, "Multiple programs");
+            av_log_request_sample(latmctx->aac_ctx.avctx, "Multiple programs");
             return AVERROR_PATCHWELCOME;
         }
 
@@ -370,7 +370,7 @@ static int read_stream_mux_config(struct LATMContext *latmctx,
 
         // for each layer (which there is only one in DVB)
         if (get_bits(gb, 3)) {                   // numLayer
-            avpriv_request_sample(latmctx->aac_ctx.avctx, "Multiple layers");
+            av_log_request_sample(latmctx->aac_ctx.avctx, "Multiple layers");
             return AVERROR_PATCHWELCOME;
         }
 

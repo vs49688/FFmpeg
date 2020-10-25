@@ -102,7 +102,7 @@ static int decode_sgirle8(AVCodecContext *avctx, uint8_t *dst,
                 v   -= length;
             } while (v > 0);
         } else {
-            avpriv_request_sample(avctx, "opcode %d", v);
+            av_log_request_sample(avctx, "opcode %d", v);
             return AVERROR_PATCHWELCOME;
         }
     }

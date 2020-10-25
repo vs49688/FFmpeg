@@ -52,7 +52,7 @@ static int decode_frame(AVCodecContext *avctx, void *data, int *got_frame,
     }
 
     if (avpkt->size > avctx->width * avctx->height * 8 / 3) {
-        avpriv_request_sample(avctx, "(Probably) padded data");
+        av_log_request_sample(avctx, "(Probably) padded data");
     }
 
     if ((ret = ff_get_buffer(avctx, pic, 0)) < 0)

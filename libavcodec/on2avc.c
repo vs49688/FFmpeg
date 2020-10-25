@@ -909,7 +909,7 @@ static av_cold int on2avc_decode_init(AVCodecContext *avctx)
     int i;
 
     if (avctx->channels > 2U) {
-        avpriv_request_sample(avctx, "Decoding more than 2 channels");
+        av_log_request_sample(avctx, "Decoding more than 2 channels");
         return AVERROR_PATCHWELCOME;
     }
 

@@ -393,7 +393,7 @@ int ff_h264_decode_seq_parameter_set(GetBitContext *gb, AVCodecContext *avctx,
         sps->profile_idc == 144) {  // old High444 profile
         sps->chroma_format_idc = get_ue_golomb_31(gb);
         if (sps->chroma_format_idc > 3U) {
-            avpriv_request_sample(avctx, "chroma_format_idc %u",
+            av_log_request_sample(avctx, "chroma_format_idc %u",
                                   sps->chroma_format_idc);
             goto fail;
         } else if (sps->chroma_format_idc == 3) {
@@ -406,7 +406,7 @@ int ff_h264_decode_seq_parameter_set(GetBitContext *gb, AVCodecContext *avctx,
         sps->bit_depth_luma   = get_ue_golomb_31(gb) + 8;
         sps->bit_depth_chroma = get_ue_golomb_31(gb) + 8;
         if (sps->bit_depth_chroma != sps->bit_depth_luma) {
-            avpriv_request_sample(avctx,
+            av_log_request_sample(avctx,
                                   "Different chroma and luma bit depth");
             goto fail;
         }

@@ -39,7 +39,7 @@ static av_cold int vcr1_decode_init(AVCodecContext *avctx)
     avctx->pix_fmt = AV_PIX_FMT_YUV410P;
 
     if (avctx->width % 8 || avctx->height%4) {
-        avpriv_request_sample(avctx, "odd dimensions (%d x %d) support", avctx->width, avctx->height);
+        av_log_request_sample(avctx, "odd dimensions (%d x %d) support", avctx->width, avctx->height);
         return AVERROR_INVALIDDATA;
     }
 

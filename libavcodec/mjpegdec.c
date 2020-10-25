@@ -474,7 +474,7 @@ int ff_mjpeg_decode_sof(MJpegDecodeContext *s)
 
     if (s->got_picture && s->interlaced && (s->bottom_field == !s->interlace_polarity)) {
         if (s->progressive) {
-            avpriv_request_sample(s->avctx, "progressively coded interlaced picture");
+            av_log_request_sample(s->avctx, "progressively coded interlaced picture");
             return AVERROR_INVALIDDATA;
         }
     } else {
