@@ -803,7 +803,7 @@ int ff_h264_decode_picture_parameter_set(GetBitContext *gb, AVCodecContext *avct
         ret = AVERROR_INVALIDDATA;
         goto fail;
     } else if (sps->bit_depth_luma == 11 || sps->bit_depth_luma == 13) {
-        avpriv_report_missing_feature(avctx,
+        av_log_report_missing_feature(avctx,
                "Unimplemented luma bit depth=%d",
                sps->bit_depth_luma);
         ret = AVERROR_PATCHWELCOME;
@@ -815,7 +815,7 @@ int ff_h264_decode_picture_parameter_set(GetBitContext *gb, AVCodecContext *avct
     pps->slice_group_count = get_ue_golomb(gb) + 1;
     if (pps->slice_group_count > 1) {
         pps->mb_slice_group_map_type = get_ue_golomb(gb);
-        avpriv_report_missing_feature(avctx, "FMO");
+        av_log_report_missing_feature(avctx, "FMO");
         ret = AVERROR_PATCHWELCOME;
         goto fail;
     }

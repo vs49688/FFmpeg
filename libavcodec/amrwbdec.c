@@ -99,7 +99,7 @@ static av_cold int amrwb_decode_init(AVCodecContext *avctx)
     int i;
 
     if (avctx->channels > 1) {
-        avpriv_report_missing_feature(avctx, "multi-channel AMR");
+        av_log_report_missing_feature(avctx, "multi-channel AMR");
         return AVERROR_PATCHWELCOME;
     }
 

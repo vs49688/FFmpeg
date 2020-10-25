@@ -312,7 +312,7 @@ static int decode_group3_2d_line(AVCodecContext *avctx, GetBitContext *gb,
                 } else if (ret)
                     break;
             } else {
-                avpriv_report_missing_feature(avctx, "Special mode %d xxx=%d support", cmode, xxx);
+                av_log_report_missing_feature(avctx, "Special mode %d xxx=%d support", cmode, xxx);
                 return AVERROR_PATCHWELCOME;
             }
         } else { //vertical mode

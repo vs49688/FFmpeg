@@ -50,7 +50,7 @@ int ff_rv10_encode_picture_header(MpegEncContext *s, int picture_number)
        to display the macroblocks is coded here */
     if(!full_frame){
         if (s->mb_width * s->mb_height >= (1U << 12)) {
-            avpriv_report_missing_feature(s->avctx, "Encoding frames with %d (>= 4096) macroblocks",
+            av_log_report_missing_feature(s->avctx, "Encoding frames with %d (>= 4096) macroblocks",
                                           s->mb_width * s->mb_height);
             return AVERROR(ENOSYS);
         }

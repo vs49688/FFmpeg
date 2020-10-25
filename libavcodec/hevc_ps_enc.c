@@ -91,7 +91,7 @@ int ff_hevc_encode_nal_vps(HEVCVPS *vps, unsigned int id,
     set_ue_golomb(&pb, vps->vps_num_layer_sets - 1);
 
     if (vps->vps_num_layer_sets > 1) {
-        avpriv_report_missing_feature(NULL, "Writing layer_id_included_flag");
+        av_log_report_missing_feature(NULL, "Writing layer_id_included_flag");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -105,7 +105,7 @@ int ff_hevc_encode_nal_vps(HEVCVPS *vps, unsigned int id,
 
         set_ue_golomb(&pb, vps->vps_num_hrd_parameters);
         if (vps->vps_num_hrd_parameters) {
-            avpriv_report_missing_feature(NULL, "Writing HRD parameters");
+            av_log_report_missing_feature(NULL, "Writing HRD parameters");
             return AVERROR_PATCHWELCOME;
         }
     }

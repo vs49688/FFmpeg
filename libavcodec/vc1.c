@@ -920,7 +920,7 @@ int ff_vc1_parse_frame_header_adv(VC1Context *v, GetBitContext* gb)
         v->tff = 1;
     }
     if (v->panscanflag) {
-        avpriv_report_missing_feature(v->s.avctx, "Pan-scan");
+        av_log_report_missing_feature(v->s.avctx, "Pan-scan");
         //...
     }
     if (v->p_frame_skipped) {

@@ -758,7 +758,7 @@ static int old_codec37(SANMVideoContext *ctx, int top,
         }
         break;
     default:
-        avpriv_report_missing_feature(ctx->avctx,
+        av_log_report_missing_feature(ctx->avctx,
                                       "Subcodec 37 compression %d", compr);
         return AVERROR_PATCHWELCOME;
     }
@@ -934,7 +934,7 @@ static int old_codec47(SANMVideoContext *ctx, int top,
             return AVERROR_INVALIDDATA;
         break;
     default:
-        avpriv_report_missing_feature(ctx->avctx,
+        av_log_report_missing_feature(ctx->avctx,
                                       "Subcodec 47 compression %d", compr);
         return AVERROR_PATCHWELCOME;
     }
@@ -1331,7 +1331,7 @@ static int read_frame_header(SANMVideoContext *ctx, SANMFrameHeader *hdr)
     hdr->height = bytestream2_get_le32u(&ctx->gb);
 
     if (hdr->width != ctx->width || hdr->height != ctx->height) {
-        avpriv_report_missing_feature(ctx->avctx, "Variable size frames");
+        av_log_report_missing_feature(ctx->avctx, "Variable size frames");
         return AVERROR_PATCHWELCOME;
     }
 

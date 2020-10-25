@@ -1714,7 +1714,7 @@ static int decode_tones_info(GetBitContext *gb, Atrac3pChanUnitCtx *ctx,
 
     ctx->waves_info->amplitude_mode = get_bits1(gb);
     if (!ctx->waves_info->amplitude_mode) {
-        avpriv_report_missing_feature(avctx, "GHA amplitude mode 0");
+        av_log_report_missing_feature(avctx, "GHA amplitude mode 0");
         return AVERROR_PATCHWELCOME;
     }
 

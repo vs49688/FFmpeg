@@ -912,14 +912,14 @@ static int decode_ga_specific_config(AACContext *ac, AVCodecContext *avctx,
 
 #if USE_FIXED
     if (get_bits1(gb)) { // frameLengthFlag
-        avpriv_report_missing_feature(avctx, "Fixed point 960/120 MDCT window");
+        av_log_report_missing_feature(avctx, "Fixed point 960/120 MDCT window");
         return AVERROR_PATCHWELCOME;
     }
     m4ac->frame_length_short = 0;
 #else
     m4ac->frame_length_short = get_bits1(gb);
     if (m4ac->frame_length_short && m4ac->sbr == 1) {
-      avpriv_report_missing_feature(avctx, "SBR with 960 frame length");
+      av_log_report_missing_feature(avctx, "SBR with 960 frame length");
       if (ac) ac->warned_960_sbr = 1;
       m4ac->sbr = 0;
       m4ac->ps = 0;
@@ -965,7 +965,7 @@ static int decode_ga_specific_config(AACContext *ac, AVCodecContext *avctx,
         case AOT_ER_AAC_LD:
             res_flags = get_bits(gb, 3);
             if (res_flags) {
-                avpriv_report_missing_feature(avctx,
+                av_log_report_missing_feature(avctx,
                                               "AAC data resilience (flags %x)",
                                               res_flags);
                 return AVERROR_PATCHWELCOME;
@@ -981,7 +981,7 @@ static int decode_ga_specific_config(AACContext *ac, AVCodecContext *avctx,
     case AOT_ER_AAC_LD:
         ep_config = get_bits(gb, 2);
         if (ep_config) {
-            avpriv_report_missing_feature(avctx,
+            av_log_report_missing_feature(avctx,
                                           "epConfig %d", ep_config);
             return AVERROR_PATCHWELCOME;
         }
@@ -1011,14 +1011,14 @@ static int decode_eld_specific_config(AACContext *ac, AVCodecContext *avctx,
 #endif
     res_flags = get_bits(gb, 3);
     if (res_flags) {
-        avpriv_report_missing_feature(avctx,
+        av_log_report_missing_feature(avctx,
                                       "AAC data resilience (flags %x)",
                                       res_flags);
         return AVERROR_PATCHWELCOME;
     }
 
     if (get_bits1(gb)) { // ldSbrPresentFlag
-        avpriv_report_missing_feature(avctx,
+        av_log_report_missing_feature(avctx,
                                       "Low Delay SBR");
         return AVERROR_PATCHWELCOME;
     }
@@ -1045,7 +1045,7 @@ static int decode_eld_specific_config(AACContext *ac, AVCodecContext *avctx,
 
     ep_config = get_bits(gb, 2);
     if (ep_config) {
-        avpriv_report_missing_feature(avctx,
+        av_log_report_missing_feature(avctx,
                                       "epConfig %d", ep_config);
         return AVERROR_PATCHWELCOME;
     }
@@ -1110,7 +1110,7 @@ static int decode_audio_specific_config_gb(AACContext *ac,
             return ret;
         break;
     default:
-        avpriv_report_missing_feature(avctx,
+        av_log_report_missing_feature(avctx,
                                       "Audio object type %s%d",
                                       m4ac->sbr == 1 ? "SBR+" : "",
                                       m4ac->object_type);
@@ -2165,7 +2165,7 @@ static int decode_ics(AACContext *ac, SingleChannelElement *sce,
         if (!eld_syntax && get_bits1(gb)) {
             decode_gain_control(sce, gb);
             if (!ac->warned_gain_control) {
-                avpriv_report_missing_feature(ac->avctx, "Gain control");
+                av_log_report_missing_feature(ac->avctx, "Gain control");
                 ac->warned_gain_control = 1;
             }
         }
@@ -2538,7 +2538,7 @@ static int decode_extension_payload(AACContext *ac, GetBitContext *gb, int cnt,
             return res;
         } else if (ac->oc[1].m4ac.frame_length_short) {
             if (!ac->warned_960_sbr)
-              avpriv_report_missing_feature(ac->avctx,
+              av_log_report_missing_feature(ac->avctx,
                                             "SBR with 960 frame length");
             ac->warned_960_sbr = 1;
             skip_bits_long(gb, 8 * cnt - 4);
@@ -3094,7 +3094,7 @@ static int parse_adts_frame_header(AACContext *ac, GetBitContext *gb)
         if (!ac->warned_num_aac_frames && hdr_info.num_aac_frames != 1) {
             // This is 2 for "VLB " audio in NSV files.
             // See samples/nsv/vlb_audio.
-            avpriv_report_missing_feature(ac->avctx,
+            av_log_report_missing_feature(ac->avctx,
                                           "More than one AAC RDB per ADTS frame");
             ac->warned_num_aac_frames = 1;
         }

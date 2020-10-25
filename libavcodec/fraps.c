@@ -164,7 +164,7 @@ static int decode_frame(AVCodecContext *avctx,
     header_size = (header & (1<<30))? 8 : 4; /* bit 30 means pad to 8 bytes */
 
     if (version > 5) {
-        avpriv_report_missing_feature(avctx, "Fraps version %u", version);
+        av_log_report_missing_feature(avctx, "Fraps version %u", version);
         return AVERROR_PATCHWELCOME;
     }
 

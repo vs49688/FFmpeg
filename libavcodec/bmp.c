@@ -100,7 +100,7 @@ static int bmp_decode_frame(AVCodecContext *avctx,
         height = bytestream_get_le16(&buf);
         break;
     default:
-        avpriv_report_missing_feature(avctx, "Information header size %u",
+        av_log_report_missing_feature(avctx, "Information header size %u",
                                       ihsize);
         return AVERROR_PATCHWELCOME;
     }

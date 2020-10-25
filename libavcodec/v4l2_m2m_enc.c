@@ -155,7 +155,7 @@ static int v4l2_check_b_frame_support(V4L2m2mContext *s)
     if (s->avctx->max_b_frames == 0)
         return 0;
 
-    avpriv_report_missing_feature(s->avctx, "DTS/PTS calculation for V4L2 encoding");
+    av_log_report_missing_feature(s->avctx, "DTS/PTS calculation for V4L2 encoding");
 
     return AVERROR_PATCHWELCOME;
 }

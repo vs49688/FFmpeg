@@ -469,7 +469,7 @@ static int libopenjpeg_decode_frame(AVCodecContext *avctx,
         }
         break;
     default:
-        avpriv_report_missing_feature(avctx, "Pixel size %d", pixel_size);
+        av_log_report_missing_feature(avctx, "Pixel size %d", pixel_size);
         ret = AVERROR_PATCHWELCOME;
         goto done;
     }

@@ -176,7 +176,7 @@ static int decode_frame(AVCodecContext *avctx,
     buf = avpkt->data + 660;
     ret = read32(&buf, endian);
     if (ret != 0xFFFFFFFF) {
-        avpriv_report_missing_feature(avctx, "Encryption");
+        av_log_report_missing_feature(avctx, "Encryption");
         av_log(avctx, AV_LOG_WARNING, "The image is encrypted and may "
                "not properly decode.\n");
     }
@@ -202,7 +202,7 @@ static int decode_frame(AVCodecContext *avctx,
     encoding = read16(&buf, endian);
 
     if (encoding) {
-        avpriv_report_missing_feature(avctx, "Encoding %d", encoding);
+        av_log_report_missing_feature(avctx, "Encoding %d", encoding);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -243,7 +243,7 @@ static int decode_frame(AVCodecContext *avctx,
         elements = 2;
         break;
     default:
-        avpriv_report_missing_feature(avctx, "Descriptor %d", descriptor);
+        av_log_report_missing_feature(avctx, "Descriptor %d", descriptor);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -278,7 +278,7 @@ static int decode_frame(AVCodecContext *avctx,
     case 1:
     case 32:
     case 64:
-        avpriv_report_missing_feature(avctx, "Depth %d", bits_per_color);
+        av_log_report_missing_feature(avctx, "Depth %d", bits_per_color);
         return AVERROR_PATCHWELCOME;
     default:
         return AVERROR_INVALIDDATA;

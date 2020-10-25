@@ -163,7 +163,7 @@ static av_cold int amrnb_decode_init(AVCodecContext *avctx)
     int i;
 
     if (avctx->channels > 1) {
-        avpriv_report_missing_feature(avctx, "multi-channel AMR");
+        av_log_report_missing_feature(avctx, "multi-channel AMR");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -973,7 +973,7 @@ static int amrnb_decode_frame(AVCodecContext *avctx, void *data,
         return AVERROR_INVALIDDATA;
     }
     if (p->cur_frame_mode == MODE_DTX) {
-        avpriv_report_missing_feature(avctx, "dtx mode");
+        av_log_report_missing_feature(avctx, "dtx mode");
         av_log(avctx, AV_LOG_INFO, "Note: libopencore_amrnb supports dtx\n");
         return AVERROR_PATCHWELCOME;
     }

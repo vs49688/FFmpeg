@@ -151,7 +151,7 @@ static int xwd_decode_frame(AVCodecContext *avctx, void *data,
     }
 
     if (pixformat != XWD_Z_PIXMAP) {
-        avpriv_report_missing_feature(avctx, "Pixmap format %"PRIu32, pixformat);
+        av_log_report_missing_feature(avctx, "Pixmap format %"PRIu32, pixformat);
         return AVERROR_PATCHWELCOME;
     }
 

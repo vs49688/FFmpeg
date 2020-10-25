@@ -456,11 +456,11 @@ int ff_jpegls_decode_picture(MJpegDecodeContext *s, int near,
         }
         decoded_height = i;
     } else if (ilv == 2) { /* sample interleaving */
-        avpriv_report_missing_feature(s->avctx, "Sample interleaved images");
+        av_log_report_missing_feature(s->avctx, "Sample interleaved images");
         ret = AVERROR_PATCHWELCOME;
         goto end;
     } else { /* unknown interleaving */
-        avpriv_report_missing_feature(s->avctx, "Unknown interleaved images");
+        av_log_report_missing_feature(s->avctx, "Unknown interleaved images");
         ret = AVERROR_PATCHWELCOME;
         goto end;
     }
@@ -509,7 +509,7 @@ int ff_jpegls_decode_picture(MJpegDecodeContext *s, int near,
                 src += s->picture_ptr->linesize[0];
             }
         }else
-            avpriv_report_missing_feature(s->avctx, "16bit xfrm");
+            av_log_report_missing_feature(s->avctx, "16bit xfrm");
     }
 
     if (shift) { /* we need to do point transform or normalize samples */

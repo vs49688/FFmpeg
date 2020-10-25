@@ -349,7 +349,7 @@ static int atrac3p_decode_frame(AVCodecContext *avctx, void *data,
     while (get_bits_left(&ctx->gb) >= 2 &&
            (ch_unit_id = get_bits(&ctx->gb, 2)) != CH_UNIT_TERMINATOR) {
         if (ch_unit_id == CH_UNIT_EXTENSION) {
-            avpriv_report_missing_feature(avctx, "Channel unit extension");
+            av_log_report_missing_feature(avctx, "Channel unit extension");
             return AVERROR_PATCHWELCOME;
         }
         if (ch_block >= ctx->num_channel_blocks ||

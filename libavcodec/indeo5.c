@@ -98,7 +98,7 @@ static int decode_gop_header(IVI45DecContext *ctx, AVCodecContext *avctx)
     }
 
     if (ctx->gop_flags & 2) {
-        avpriv_report_missing_feature(avctx, "YV12 picture format");
+        av_log_report_missing_feature(avctx, "YV12 picture format");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -146,7 +146,7 @@ static int decode_gop_header(IVI45DecContext *ctx, AVCodecContext *avctx)
             }
 
             if (get_bits1(&ctx->gb)) {
-                avpriv_report_missing_feature(avctx, "Extended transform info");
+                av_log_report_missing_feature(avctx, "Extended transform info");
                 return AVERROR_PATCHWELCOME;
             }
 

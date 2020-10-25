@@ -430,7 +430,7 @@ static int decode_frame(AVCodecContext *avctx, void *data,
         } else if (type == 2){
             decode_type2(gb, pb);
         } else {
-            avpriv_report_missing_feature(avctx, "Compression type %d", type);
+            av_log_report_missing_feature(avctx, "Compression type %d", type);
             return AVERROR_PATCHWELCOME;
         }
 
@@ -476,7 +476,7 @@ static int decode_frame(AVCodecContext *avctx, void *data,
             } else if (type == 2){
                 decode_type2(gb, pb);
             } else {
-                avpriv_report_missing_feature(avctx, "Compression type %d", type);
+                av_log_report_missing_feature(avctx, "Compression type %d", type);
                 return AVERROR_PATCHWELCOME;
             }
 

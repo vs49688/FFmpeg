@@ -1028,37 +1028,37 @@ static int parse_decoder_init(DCALbrDecoder *s, GetByteContext *gb)
     }
     s->sample_rate = ff_dca_sampling_freqs[sr_code];
     if (s->sample_rate > 48000) {
-        avpriv_report_missing_feature(s->avctx, "%d Hz LBR sample rate", s->sample_rate);
+        av_log_report_missing_feature(s->avctx, "%d Hz LBR sample rate", s->sample_rate);
         return AVERROR_PATCHWELCOME;
     }
 
     // LBR speaker mask
     s->ch_mask = bytestream2_get_le16(gb);
     if (!(s->ch_mask & 0x7)) {
-        avpriv_report_missing_feature(s->avctx, "LBR channel mask %#x", s->ch_mask);
+        av_log_report_missing_feature(s->avctx, "LBR channel mask %#x", s->ch_mask);
         return AVERROR_PATCHWELCOME;
     }
     if ((s->ch_mask & 0xfff0) && !(s->warned & 1)) {
-        avpriv_report_missing_feature(s->avctx, "LBR channel mask %#x", s->ch_mask);
+        av_log_report_missing_feature(s->avctx, "LBR channel mask %#x", s->ch_mask);
         s->warned |= 1;
     }
 
     // LBR bitstream version
     version = bytestream2_get_le16(gb);
     if ((version & 0xff00) != 0x0800) {
-        avpriv_report_missing_feature(s->avctx, "LBR stream version %#x", version);
+        av_log_report_missing_feature(s->avctx, "LBR stream version %#x", version);
         return AVERROR_PATCHWELCOME;
     }
 
     // Flags for LBR decoder initialization
     s->flags = bytestream2_get_byte(gb);
     if (s->flags & LBR_FLAG_DMIX_MULTI_CH) {
-        avpriv_report_missing_feature(s->avctx, "LBR multi-channel downmix");
+        av_log_report_missing_feature(s->avctx, "LBR multi-channel downmix");
         return AVERROR_PATCHWELCOME;
     }
     if ((s->flags & LBR_FLAG_LFE_PRESENT) && s->sample_rate != 48000) {
         if (!(s->warned & 2)) {
-            avpriv_report_missing_feature(s->avctx, "%d Hz LFE interpolation", s->sample_rate);
+            av_log_report_missing_feature(s->avctx, "%d Hz LFE interpolation", s->sample_rate);
             s->warned |= 2;
         }
         s->flags &= ~LBR_FLAG_LFE_PRESENT;
@@ -1089,7 +1089,7 @@ static int parse_decoder_init(DCALbrDecoder *s, GetByteContext *gb)
         s->band_limit = 2;
         break;
     default:
-        avpriv_report_missing_feature(s->avctx, "LBR band limit %#x", s->flags & LBR_FLAG_BAND_LIMIT_MASK);
+        av_log_report_missing_feature(s->avctx, "LBR band limit %#x", s->flags & LBR_FLAG_BAND_LIMIT_MASK);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -1141,7 +1141,7 @@ static int parse_decoder_init(DCALbrDecoder *s, GetByteContext *gb)
 
         // This decoder doesn't support ECS chunk
         if (dca->request_channel_layout != DCA_SPEAKER_LAYOUT_STEREO && !(s->warned & 4)) {
-            avpriv_report_missing_feature(s->avctx, "Embedded LBR stereo downmix");
+            av_log_report_missing_feature(s->avctx, "Embedded LBR stereo downmix");
             s->warned |= 4;
         }
 

@@ -597,7 +597,7 @@ static int cfhd_decode(AVCodecContext *avctx, void *data, int *got_frame,
             } else if (data == 4) {
                 s->coded_format = AV_PIX_FMT_GBRAP12;
             } else {
-                avpriv_report_missing_feature(avctx, "Sample format of %"PRIu16, data);
+                av_log_report_missing_feature(avctx, "Sample format of %"PRIu16, data);
                 ret = AVERROR_PATCHWELCOME;
                 goto end;
             }

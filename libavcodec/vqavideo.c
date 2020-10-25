@@ -139,7 +139,7 @@ static av_cold int vqa_decode_init(AVCodecContext *avctx)
     case 2:
         break;
     case 3:
-        avpriv_report_missing_feature(avctx, "VQA Version %d", s->vqa_version);
+        av_log_report_missing_feature(avctx, "VQA Version %d", s->vqa_version);
         return AVERROR_PATCHWELCOME;
     default:
         av_log_request_sample(avctx, "VQA Version %i", s->vqa_version);

@@ -677,7 +677,7 @@ static int decode_idat_chunk(AVCodecContext *avctx, PNGDecContext *s,
                 s->color_type == PNG_COLOR_TYPE_GRAY_ALPHA) {
             avctx->pix_fmt = AV_PIX_FMT_YA16BE;
         } else {
-            avpriv_report_missing_feature(avctx,
+            av_log_report_missing_feature(avctx,
                                           "Bit depth %d color type %d",
                                           s->bit_depth, s->color_type);
             return AVERROR_PATCHWELCOME;

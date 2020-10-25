@@ -392,7 +392,7 @@ static int decode_frame(AVCodecContext *avctx,
 
             if (opcode == PACKBITSRGN) {
                 bytestream2_skip(&gbc, 2 + 8); /* size + rect */
-                avpriv_report_missing_feature(avctx, "Packbit mask region");
+                av_log_report_missing_feature(avctx, "Packbit mask region");
             }
 
             if (avctx->pix_fmt == AV_PIX_FMT_RGB555)
@@ -414,7 +414,7 @@ static int decode_frame(AVCodecContext *avctx,
             bytestream2_skip(&gbc, 4);
             rowbytes = bytestream2_get_be16(&gbc) & 0x3FFF;
             if (rowbytes <= 250) {
-                avpriv_report_missing_feature(avctx, "Short rowbytes");
+                av_log_report_missing_feature(avctx, "Short rowbytes");
                 return AVERROR_PATCHWELCOME;
             }
 
@@ -465,7 +465,7 @@ static int decode_frame(AVCodecContext *avctx,
 
             if (opcode == DIRECTBITSRGN) {
                 bytestream2_skip(&gbc, 2 + 8); /* size + rect */
-                avpriv_report_missing_feature(avctx, "DirectBit mask region");
+                av_log_report_missing_feature(avctx, "DirectBit mask region");
             }
 
             if (avctx->pix_fmt == AV_PIX_FMT_RGB555)

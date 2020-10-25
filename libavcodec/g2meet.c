@@ -1257,7 +1257,7 @@ static int g2m_load_cursor(AVCodecContext *avctx, G2MContext *c,
         return AVERROR_INVALIDDATA;
     }
     if (cursor_fmt != 1 && cursor_fmt != 32) {
-        avpriv_report_missing_feature(avctx, "Cursor format %d",
+        av_log_report_missing_feature(avctx, "Cursor format %d",
                                       cursor_fmt);
         return AVERROR_PATCHWELCOME;
     }
@@ -1457,7 +1457,7 @@ static int g2m_decode_frame(AVCodecContext *avctx, void *data,
             }
             c->compression = bytestream2_get_be32(&bc);
             if (c->compression != 2 && c->compression != 3) {
-                avpriv_report_missing_feature(avctx, "Compression method %d",
+                av_log_report_missing_feature(avctx, "Compression method %d",
                                               c->compression);
                 ret = AVERROR_PATCHWELCOME;
                 goto header_fail;
@@ -1490,7 +1490,7 @@ static int g2m_decode_frame(AVCodecContext *avctx, void *data,
                 g_mask = bytestream2_get_be32(&bc);
                 b_mask = bytestream2_get_be32(&bc);
                 if (r_mask != 0xFF0000 || g_mask != 0xFF00 || b_mask != 0xFF) {
-                    avpriv_report_missing_feature(avctx,
+                    av_log_report_missing_feature(avctx,
                                                   "Bitmasks: R=%"PRIX32", G=%"PRIX32", B=%"PRIX32,
                                                   r_mask, g_mask, b_mask);
                     ret = AVERROR_PATCHWELCOME;

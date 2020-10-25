@@ -1504,7 +1504,7 @@ static int tiff_decode_tag(TiffContext *s, AVFrame *frame)
         case TIFF_PHOTOMETRIC_ITU_LAB:
         case TIFF_PHOTOMETRIC_LOG_L:
         case TIFF_PHOTOMETRIC_LOG_LUV:
-            avpriv_report_missing_feature(s->avctx,
+            av_log_report_missing_feature(s->avctx,
                                           "PhotometricInterpretation 0x%04X",
                                           value);
             return AVERROR_PATCHWELCOME;
@@ -1966,10 +1966,10 @@ again:
 
     if (is_dng && s->is_tiled) {
         if (!s->is_jpeg) {
-            avpriv_report_missing_feature(avctx, "DNG uncompressed tiled images");
+            av_log_report_missing_feature(avctx, "DNG uncompressed tiled images");
             return AVERROR_PATCHWELCOME;
         } else if (!s->is_bayer) {
-            avpriv_report_missing_feature(avctx, "DNG JPG-compressed tiled non-bayer-encoded images");
+            av_log_report_missing_feature(avctx, "DNG JPG-compressed tiled non-bayer-encoded images");
             return AVERROR_PATCHWELCOME;
         } else {
             if ((ret = dng_decode_tiles(avctx, (AVFrame*)data, avpkt)) > 0)

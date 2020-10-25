@@ -1067,7 +1067,7 @@ static int svq3_decode_slice_header(AVCodecContext *avctx)
         i = (s->mb_num < 64) ? 6 : (1 + av_log2(s->mb_num - 1));
         get_bits(&s->gb_slice, i);
     } else if (get_bits1(&s->gb_slice)) {
-        avpriv_report_missing_feature(s->avctx, "Media key encryption");
+        av_log_report_missing_feature(s->avctx, "Media key encryption");
         return AVERROR_PATCHWELCOME;
     }
 

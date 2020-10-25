@@ -76,15 +76,15 @@ static int cpia_decode_frame(AVCodecContext *avctx,
 
     // currently unsupported properties
     if (header[17] == SUBSAMPLE_422) {
-        avpriv_report_missing_feature(avctx, "4:2:2 subsampling");
+        av_log_report_missing_feature(avctx, "4:2:2 subsampling");
         return AVERROR_PATCHWELCOME;
     }
     if (header[18] == YUVORDER_UYVY) {
-        avpriv_report_missing_feature(avctx, "YUV byte order UYVY");
+        av_log_report_missing_feature(avctx, "YUV byte order UYVY");
         return AVERROR_PATCHWELCOME;
     }
     if (header[29] == DECIMATION_ENAB) {
-        avpriv_report_missing_feature(avctx, "Decimation");
+        av_log_report_missing_feature(avctx, "Decimation");
         return AVERROR_PATCHWELCOME;
     }
 

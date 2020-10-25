@@ -373,7 +373,7 @@ int ff_mjpeg_decode_sof(MJpegDecodeContext *s)
         }
     }
     if (s->ls && !(bits <= 8 || nb_components == 1)) {
-        avpriv_report_missing_feature(s->avctx,
+        av_log_report_missing_feature(s->avctx,
                                       "JPEG-LS that is not <= 8 "
                                       "bits/component or 16-bit gray");
         return AVERROR_PATCHWELCOME;
@@ -420,7 +420,7 @@ int ff_mjpeg_decode_sof(MJpegDecodeContext *s)
         s->adobe_transform = 0;
 
     if (s->ls && (s->h_max > 1 || s->v_max > 1)) {
-        avpriv_report_missing_feature(s->avctx, "Subsampling in JPEG-LS");
+        av_log_report_missing_feature(s->avctx, "Subsampling in JPEG-LS");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -668,17 +668,17 @@ int ff_mjpeg_decode_sof(MJpegDecodeContext *s)
             break;
         default:
     unk_pixfmt:
-            avpriv_report_missing_feature(s->avctx, "Pixel format 0x%x bits:%d", pix_fmt_id, s->bits);
+            av_log_report_missing_feature(s->avctx, "Pixel format 0x%x bits:%d", pix_fmt_id, s->bits);
             memset(s->upscale_h, 0, sizeof(s->upscale_h));
             memset(s->upscale_v, 0, sizeof(s->upscale_v));
             return AVERROR_PATCHWELCOME;
         }
         if ((AV_RB32(s->upscale_h) || AV_RB32(s->upscale_v)) && s->avctx->lowres) {
-            avpriv_report_missing_feature(s->avctx, "Lowres for weird subsampling");
+            av_log_report_missing_feature(s->avctx, "Lowres for weird subsampling");
             return AVERROR_PATCHWELCOME;
         }
         if ((AV_RB32(s->upscale_h) || AV_RB32(s->upscale_v)) && s->progressive && s->avctx->pix_fmt == AV_PIX_FMT_GBRP) {
-            avpriv_report_missing_feature(s->avctx, "progressive for weird subsampling");
+            av_log_report_missing_feature(s->avctx, "progressive for weird subsampling");
             return AVERROR_PATCHWELCOME;
         }
         if (s->ls) {
@@ -1657,7 +1657,7 @@ int ff_mjpeg_decode_sos(MJpegDecodeContext *s, const uint8_t *mb_bitmask,
     len = get_bits(&s->gb, 16);
     nb_components = get_bits(&s->gb, 8);
     if (nb_components == 0 || nb_components > MAX_COMPONENTS) {
-        avpriv_report_missing_feature(s->avctx,
+        av_log_report_missing_feature(s->avctx,
                                       "decode_sos: nb_components (%d)",
                                       nb_components);
         return AVERROR_PATCHWELCOME;

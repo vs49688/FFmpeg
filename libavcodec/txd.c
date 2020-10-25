@@ -59,7 +59,7 @@ static int txd_decode_frame(AVCodecContext *avctx, void *data, int *got_frame,
     flags           = bytestream2_get_byte(&gb);
 
     if (version < 8 || version > 9) {
-        avpriv_report_missing_feature(avctx, "Texture data version %u", version);
+        av_log_report_missing_feature(avctx, "Texture data version %u", version);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -68,7 +68,7 @@ static int txd_decode_frame(AVCodecContext *avctx, void *data, int *got_frame,
     } else if (depth == 16 || depth == 32) {
         avctx->pix_fmt = AV_PIX_FMT_RGBA;
     } else {
-        avpriv_report_missing_feature(avctx, "Color depth of %u", depth);
+        av_log_report_missing_feature(avctx, "Color depth of %u", depth);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -151,7 +151,7 @@ static int txd_decode_frame(AVCodecContext *avctx, void *data, int *got_frame,
     return avpkt->size;
 
 unsupported:
-    avpriv_report_missing_feature(avctx, "d3d format (%08x)", d3d_format);
+    av_log_report_missing_feature(avctx, "d3d format (%08x)", d3d_format);
     return AVERROR_PATCHWELCOME;
 }
 

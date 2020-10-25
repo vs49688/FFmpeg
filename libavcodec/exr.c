@@ -1026,7 +1026,7 @@ static int decode_block(AVCodecContext *avctx, void *tdata,
             return AVERROR_INVALIDDATA;
 
         if (tile_level_x || tile_level_y) { /* tile level, is not the full res level */
-            avpriv_report_missing_feature(s->avctx, "Subres tile before full res tile");
+            av_log_report_missing_feature(s->avctx, "Subres tile before full res tile");
             return AVERROR_PATCHWELCOME;
         }
 
@@ -1351,7 +1351,7 @@ static int decode_header(EXRContext *s, AVFrame *frame)
 
     version = bytestream2_get_byte(&s->gb);
     if (version != 2) {
-        avpriv_report_missing_feature(s->avctx, "Version %d", version);
+        av_log_report_missing_feature(s->avctx, "Version %d", version);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -1360,11 +1360,11 @@ static int decode_header(EXRContext *s, AVFrame *frame)
     if (flags & 0x02)
         s->is_tile = 1;
     if (flags & 0x08) {
-        avpriv_report_missing_feature(s->avctx, "deep data");
+        av_log_report_missing_feature(s->avctx, "deep data");
         return AVERROR_PATCHWELCOME;
     }
     if (flags & 0x10) {
-        avpriv_report_missing_feature(s->avctx, "multipart");
+        av_log_report_missing_feature(s->avctx, "multipart");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -1443,7 +1443,7 @@ static int decode_header(EXRContext *s, AVFrame *frame)
 
                 current_pixel_type = bytestream2_get_le32(&ch_gb);
                 if (current_pixel_type >= EXR_UNKNOWN) {
-                    avpriv_report_missing_feature(s->avctx, "Pixel type %d",
+                    av_log_report_missing_feature(s->avctx, "Pixel type %d",
                                                   current_pixel_type);
                     ret = AVERROR_PATCHWELCOME;
                     goto fail;
@@ -1454,7 +1454,7 @@ static int decode_header(EXRContext *s, AVFrame *frame)
                 ysub = bytestream2_get_le32(&ch_gb);
 
                 if (xsub != 1 || ysub != 1) {
-                    avpriv_report_missing_feature(s->avctx,
+                    av_log_report_missing_feature(s->avctx,
                                                   "Subsampling %dx%d",
                                                   xsub, ysub);
                     ret = AVERROR_PATCHWELCOME;
@@ -1614,14 +1614,14 @@ static int decode_header(EXRContext *s, AVFrame *frame)
             s->tile_attr.level_round = (tileLevel >> 4) & 0x0f;
 
             if (s->tile_attr.level_mode >= EXR_TILE_LEVEL_UNKNOWN) {
-                avpriv_report_missing_feature(s->avctx, "Tile level mode %d",
+                av_log_report_missing_feature(s->avctx, "Tile level mode %d",
                                               s->tile_attr.level_mode);
                 ret = AVERROR_PATCHWELCOME;
                 goto fail;
             }
 
             if (s->tile_attr.level_round >= EXR_TILE_ROUND_UNKNOWN) {
-                avpriv_report_missing_feature(s->avctx, "Tile level round %d",
+                av_log_report_missing_feature(s->avctx, "Tile level round %d",
                                               s->tile_attr.level_round);
                 ret = AVERROR_PATCHWELCOME;
                 goto fail;
@@ -1763,7 +1763,7 @@ static int decode_frame(AVCodecContext *avctx, void *data,
         s->scan_lines_per_block = 32;
         break;
     default:
-        avpriv_report_missing_feature(avctx, "Compression %d", s->compression);
+        av_log_report_missing_feature(avctx, "Compression %d", s->compression);
         return AVERROR_PATCHWELCOME;
     }
 

@@ -64,7 +64,7 @@ static int aac_adtstoasc_filter(AVBSFContext *bsfc, AVPacket *pkt)
     }
 
     if (!hdr.crc_absent && hdr.num_aac_frames > 1) {
-        avpriv_report_missing_feature(bsfc,
+        av_log_report_missing_feature(bsfc,
                                       "Multiple RDBs per frame with CRC");
         ret = AVERROR_PATCHWELCOME;
         goto fail;
@@ -83,7 +83,7 @@ static int aac_adtstoasc_filter(AVBSFContext *bsfc, AVPacket *pkt)
         if (!hdr.chan_config) {
             init_get_bits(&gb, pkt->data, pkt->size * 8);
             if (get_bits(&gb, 3) != 5) {
-                avpriv_report_missing_feature(bsfc,
+                av_log_report_missing_feature(bsfc,
                                               "PCE-based channel configuration "
                                               "without PCE as first syntax "
                                               "element");

@@ -299,7 +299,7 @@ static int parse_bit_alloc(DBEContext *s, DBEChannel *c)
     }
 
     if (get_bits1(&s->gb)) {
-        avpriv_report_missing_feature(s->avctx, "Delta bit allocation");
+        av_log_report_missing_feature(s->avctx, "Delta bit allocation");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -417,7 +417,7 @@ static int parse_channel(DBEContext *s, int ch, int seg_id)
     int i, ret;
 
     if (s->rev_id[ch] > 1) {
-        avpriv_report_missing_feature(s->avctx, "Encoder revision %d", s->rev_id[ch]);
+        av_log_report_missing_feature(s->avctx, "Encoder revision %d", s->rev_id[ch]);
         return AVERROR_PATCHWELCOME;
     }
 

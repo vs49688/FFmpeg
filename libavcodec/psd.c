@@ -342,7 +342,7 @@ static int decode_frame(AVCodecContext *avctx, void *data,
             } else if (s->channel_depth == 16) {
                 avctx->pix_fmt = AV_PIX_FMT_GBRP16BE;
             } else {
-                avpriv_report_missing_feature(avctx, "channel depth %d for cmyk", s->channel_depth);
+                av_log_report_missing_feature(avctx, "channel depth %d for cmyk", s->channel_depth);
                 return AVERROR_PATCHWELCOME;
             }
         } else if (s->channel_count == 5) {
@@ -351,11 +351,11 @@ static int decode_frame(AVCodecContext *avctx, void *data,
             } else if (s->channel_depth == 16) {
                 avctx->pix_fmt = AV_PIX_FMT_GBRAP16BE;
             } else {
-                avpriv_report_missing_feature(avctx, "channel depth %d for cmyk", s->channel_depth);
+                av_log_report_missing_feature(avctx, "channel depth %d for cmyk", s->channel_depth);
                 return AVERROR_PATCHWELCOME;
             }
         } else {
-            avpriv_report_missing_feature(avctx, "channel count %d for cmyk", s->channel_count);
+            av_log_report_missing_feature(avctx, "channel count %d for cmyk", s->channel_count);
             return AVERROR_PATCHWELCOME;
         }
         break;
@@ -366,7 +366,7 @@ static int decode_frame(AVCodecContext *avctx, void *data,
             } else if (s->channel_depth == 16) {
                 avctx->pix_fmt = AV_PIX_FMT_GBRP16BE;
             } else {
-                avpriv_report_missing_feature(avctx, "channel depth %d for rgb", s->channel_depth);
+                av_log_report_missing_feature(avctx, "channel depth %d for rgb", s->channel_depth);
                 return AVERROR_PATCHWELCOME;
             }
         } else if (s->channel_count == 4) {
@@ -375,11 +375,11 @@ static int decode_frame(AVCodecContext *avctx, void *data,
             } else if (s->channel_depth == 16) {
                 avctx->pix_fmt = AV_PIX_FMT_GBRAP16BE;
             } else {
-                avpriv_report_missing_feature(avctx, "channel depth %d for rgb", s->channel_depth);
+                av_log_report_missing_feature(avctx, "channel depth %d for rgb", s->channel_depth);
                 return AVERROR_PATCHWELCOME;
             }
         } else {
-            avpriv_report_missing_feature(avctx, "channel count %d for rgb", s->channel_count);
+            av_log_report_missing_feature(avctx, "channel count %d for rgb", s->channel_count);
             return AVERROR_PATCHWELCOME;
         }
         break;
@@ -394,7 +394,7 @@ static int decode_frame(AVCodecContext *avctx, void *data,
             } else if (s->channel_depth == 32) {
                 avctx->pix_fmt = AV_PIX_FMT_GRAYF32BE;
             } else {
-                avpriv_report_missing_feature(avctx, "channel depth %d for grayscale", s->channel_depth);
+                av_log_report_missing_feature(avctx, "channel depth %d for grayscale", s->channel_depth);
                 return AVERROR_PATCHWELCOME;
             }
         } else if (s->channel_count == 2) {
@@ -403,16 +403,16 @@ static int decode_frame(AVCodecContext *avctx, void *data,
             } else if (s->channel_depth == 16) {
                 avctx->pix_fmt = AV_PIX_FMT_YA16BE;
             } else {
-                avpriv_report_missing_feature(avctx, "channel depth %d for grayscale", s->channel_depth);
+                av_log_report_missing_feature(avctx, "channel depth %d for grayscale", s->channel_depth);
                 return AVERROR_PATCHWELCOME;
             }
         } else {
-            avpriv_report_missing_feature(avctx, "channel count %d for grayscale", s->channel_count);
+            av_log_report_missing_feature(avctx, "channel count %d for grayscale", s->channel_count);
             return AVERROR_PATCHWELCOME;
         }
         break;
     default:
-        avpriv_report_missing_feature(avctx, "color mode %d", s->color_mode);
+        av_log_report_missing_feature(avctx, "color mode %d", s->color_mode);
         return AVERROR_PATCHWELCOME;
     }
 
