@@ -51,7 +51,7 @@ static int s337m_get_offset_and_codec(void *avc,
 
     if ((data_type & 0x1F) != 0x1C) {
         if (avc)
-            avpriv_report_missing_feature(avc, "Data type %#x in SMPTE 337M", data_type & 0x1F);
+            av_log_report_missing_feature(avc, "Data type %#x in SMPTE 337M", data_type & 0x1F);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -73,7 +73,7 @@ static int s337m_get_offset_and_codec(void *avc,
         break;
     default:
         if (avc)
-            avpriv_report_missing_feature(avc, "Dolby E data size %d in SMPTE 337M", data_size);
+            av_log_report_missing_feature(avc, "Dolby E data size %d in SMPTE 337M", data_size);
         return AVERROR_PATCHWELCOME;
     }
 

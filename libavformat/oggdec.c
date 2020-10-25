@@ -215,7 +215,7 @@ static int ogg_replace_stream(AVFormatContext *s, uint32_t serial, char *magic, 
     int i = 0;
 
     if (ogg->nstreams != 1) {
-        avpriv_report_missing_feature(s, "Changing stream parameters in multistream ogg");
+        av_log_report_missing_feature(s, "Changing stream parameters in multistream ogg");
         return AVERROR_PATCHWELCOME;
     }
 

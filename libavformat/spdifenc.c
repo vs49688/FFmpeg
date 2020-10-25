@@ -595,7 +595,7 @@ static int spdif_write_header(AVFormatContext *s)
         }
         break;
     default:
-        avpriv_report_missing_feature(s, "Codec %d",
+        av_log_report_missing_feature(s, "Codec %d",
                                       s->streams[0]->codecpar->codec_id);
         return AVERROR_PATCHWELCOME;
     }

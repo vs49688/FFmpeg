@@ -240,7 +240,7 @@ static int mpc8_read_header(AVFormatContext *s)
     avio_skip(pb, 4); //CRC
     c->ver = avio_r8(pb);
     if(c->ver != 8){
-        avpriv_report_missing_feature(s, "Stream version %d", c->ver);
+        av_log_report_missing_feature(s, "Stream version %d", c->ver);
         return AVERROR_PATCHWELCOME;
     }
     c->samples = ffio_read_varlen(pb);

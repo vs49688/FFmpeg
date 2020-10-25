@@ -2849,7 +2849,7 @@ static int matroska_read_header(AVFormatContext *s)
         ebml.max_size        > sizeof(uint64_t)  ||
         ebml.id_length       > sizeof(uint32_t)  ||
         ebml.doctype_version > 3) {
-        avpriv_report_missing_feature(matroska->ctx,
+        av_log_report_missing_feature(matroska->ctx,
                                       "EBML version %"PRIu64", doctype %s, doc version %"PRIu64,
                                       ebml.version, ebml.doctype, ebml.doctype_version);
         ebml_free(ebml_syntax, &ebml);

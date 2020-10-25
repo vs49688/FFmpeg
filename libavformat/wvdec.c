@@ -100,7 +100,7 @@ static int wv_read_block_header(AVFormatContext *ctx, AVIOContext *pb)
     }
 
     if (wc->header.version < 0x402 || wc->header.version > 0x410) {
-        avpriv_report_missing_feature(ctx, "WV version 0x%03X",
+        av_log_report_missing_feature(ctx, "WV version 0x%03X",
                                       wc->header.version);
         return AVERROR_PATCHWELCOME;
     }

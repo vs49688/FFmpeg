@@ -112,7 +112,7 @@ static int codec2_read_header(AVFormatContext *s)
 
     version = avpriv_codec2_version_from_extradata(st->codecpar->extradata);
     if ((version >> 8) != EXPECTED_CODEC2_MAJOR_VERSION) {
-        avpriv_report_missing_feature(s, "Major version %i", version >> 8);
+        av_log_report_missing_feature(s, "Major version %i", version >> 8);
         return AVERROR_PATCHWELCOME;
     }
 

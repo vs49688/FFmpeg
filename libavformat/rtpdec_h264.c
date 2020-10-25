@@ -351,7 +351,7 @@ static int h264_handle_packet(AVFormatContext *ctx, PayloadContext *data,
     case 26:                   // MTAP-16
     case 27:                   // MTAP-24
     case 29:                   // FU-B
-        avpriv_report_missing_feature(ctx, "RTP H.264 NAL unit type %d", type);
+        av_log_report_missing_feature(ctx, "RTP H.264 NAL unit type %d", type);
         result = AVERROR_PATCHWELCOME;
         break;
 

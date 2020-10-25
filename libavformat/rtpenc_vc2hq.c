@@ -126,7 +126,7 @@ void ff_rtp_send_vc2hq(AVFormatContext *ctx, const uint8_t *frame_buf, int frame
         case DIRAC_PCODE_PAD:
             break;
         default:
-            avpriv_report_missing_feature(ctx, "VC-2 parse code %d", parse_code);
+            av_log_report_missing_feature(ctx, "VC-2 parse code %d", parse_code);
             break;
         }
         unit += unit_size;

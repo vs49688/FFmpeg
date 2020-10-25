@@ -109,7 +109,7 @@ static int parse_fmtp_config(AVStream *st, const char *value)
     num_layers        = get_bits(&gb, 3);
     if (audio_mux_version != 0 || same_time_framing != 1 || num_programs != 0 ||
         num_layers != 0) {
-        avpriv_report_missing_feature(NULL, "LATM config (%d,%d,%d,%d)",
+        av_log_report_missing_feature(NULL, "LATM config (%d,%d,%d,%d)",
                                       audio_mux_version, same_time_framing,
                                       num_programs, num_layers);
         ret = AVERROR_PATCHWELCOME;

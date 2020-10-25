@@ -134,7 +134,7 @@ int ff_get_wav_header(AVFormatContext *s, AVIOContext *pb,
     if (size >= 18 && id != 0x0165) {  /* We're obviously dealing with WAVEFORMATEX */
         int cbSize = avio_rl16(pb); /* cbSize */
         if (big_endian) {
-            avpriv_report_missing_feature(s, "WAVEFORMATEX support for RIFX files");
+            av_log_report_missing_feature(s, "WAVEFORMATEX support for RIFX files");
             return AVERROR_PATCHWELCOME;
         }
         size  -= 18;

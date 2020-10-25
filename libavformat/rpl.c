@@ -171,7 +171,7 @@ static int rpl_read_header(AVFormatContext *s)
                 vst->codecpar->codec_id = AV_CODEC_ID_ESCAPE130;
                 break;
             default:
-                avpriv_report_missing_feature(s, "Video format %s",
+                av_log_report_missing_feature(s, "Video format %s",
                                               av_fourcc2str(vst->codecpar->codec_tag));
                 vst->codecpar->codec_id = AV_CODEC_ID_NONE;
         }

@@ -219,7 +219,7 @@ int ff_spdif_read_packet(AVFormatContext *s, AVPacket *pkt)
         st->codecpar->codec_type = AVMEDIA_TYPE_AUDIO;
         st->codecpar->codec_id = codec_id;
     } else if (codec_id != s->streams[0]->codecpar->codec_id) {
-        avpriv_report_missing_feature(s, "Codec change in IEC 61937");
+        av_log_report_missing_feature(s, "Codec change in IEC 61937");
         return AVERROR_PATCHWELCOME;
     }
 

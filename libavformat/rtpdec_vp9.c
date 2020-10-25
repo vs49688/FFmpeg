@@ -233,7 +233,7 @@ static int vp9_handle_packet(AVFormatContext *ctx, PayloadContext *rtp_vp9_ctx,
         buf++;
         len--;
         if (n_s > 0) {
-            avpriv_report_missing_feature(ctx, "VP9 scalability structure with multiple layers");
+            av_log_report_missing_feature(ctx, "VP9 scalability structure with multiple layers");
             return AVERROR_PATCHWELCOME;
         }
         if (y) {
