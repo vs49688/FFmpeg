@@ -111,7 +111,7 @@ static int xwma_read_header(AVFormatContext *s)
      * and WMAPRO with 6 channels. */
     if (st->codecpar->codec_id != AV_CODEC_ID_WMAV2 &&
         st->codecpar->codec_id != AV_CODEC_ID_WMAPRO) {
-        avpriv_request_sample(s, "Unexpected codec (tag %s; id %d)",
+        av_log_request_sample(s, "Unexpected codec (tag %s; id %d)",
                               av_fourcc2str(st->codecpar->codec_tag),
                               st->codecpar->codec_id);
     } else {
@@ -127,7 +127,7 @@ static int xwma_read_header(AVFormatContext *s)
              * if it will work, but just go on and try it, after asking
              * the user for a sample.
              */
-            avpriv_request_sample(s, "Unexpected extradata (%d bytes)",
+            av_log_request_sample(s, "Unexpected extradata (%d bytes)",
                                   st->codecpar->extradata_size);
         } else if (st->codecpar->codec_id == AV_CODEC_ID_WMAPRO) {
             if ((ret = ff_alloc_extradata(st->codecpar, 18)) < 0)

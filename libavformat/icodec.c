@@ -142,7 +142,7 @@ static int read_header(AVFormatContext *s)
                 st->codecpar->height = tmp / 2;
             break;
         default:
-            avpriv_request_sample(s, "codec %d", codec);
+            av_log_request_sample(s, "codec %d", codec);
             av_freep(&ico->images);
             return AVERROR_INVALIDDATA;
         }

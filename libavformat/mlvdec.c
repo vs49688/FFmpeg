@@ -139,7 +139,7 @@ static int scan_file(AVFormatContext *avctx, AVStream *vst, AVStream *ast, int f
             if (ret < 0)
                 return ret;
             if (avio_rl32(pb) != 1)
-                avpriv_request_sample(avctx, "raw api version");
+                av_log_request_sample(avctx, "raw api version");
             avio_skip(pb, 20); // pointer, width, height, pitch, frame_size
             bits_per_coded_sample = avio_rl32(pb);
             if (bits_per_coded_sample > (INT_MAX - 7) / (width * height)) {
@@ -153,7 +153,7 @@ static int scan_file(AVFormatContext *avctx, AVStream *vst, AVStream *ast, int f
             vst->codecpar->bits_per_coded_sample = bits_per_coded_sample;
             avio_skip(pb, 8 + 16 + 24); // black_level, white_level, xywh, active_area, exposure_bias
             if (avio_rl32(pb) != 0x2010100) /* RGGB */
-                avpriv_request_sample(avctx, "cfa_pattern");
+                av_log_request_sample(avctx, "cfa_pattern");
             avio_skip(pb, 80); // calibration_illuminant1, color_matrix1, dynamic_range
             vst->codecpar->format    = AV_PIX_FMT_BAYER_RGGB16LE;
             vst->codecpar->codec_tag = MKTAG('B', 'I', 'T', 16);
@@ -290,7 +290,7 @@ static int read_header(AVFormatContext *avctx)
         vst->id = 0;
         vst->nb_frames = nb_video_frames;
         if ((mlv->class[0] & (MLV_CLASS_FLAG_DELTA|MLV_CLASS_FLAG_LZMA)))
-            avpriv_request_sample(avctx, "compression");
+            av_log_request_sample(avctx, "compression");
         vst->codecpar->codec_type = AVMEDIA_TYPE_VIDEO;
         switch (mlv->class[0] & ~(MLV_CLASS_FLAG_DELTA|MLV_CLASS_FLAG_LZMA)) {
         case MLV_VIDEO_CLASS_RAW:
@@ -310,7 +310,7 @@ static int read_header(AVFormatContext *avctx)
             vst->codecpar->codec_tag = 0;
             break;
         default:
-            avpriv_request_sample(avctx, "unknown video class");
+            av_log_request_sample(avctx, "unknown video class");
         }
     }
 
@@ -321,9 +321,9 @@ static int read_header(AVFormatContext *avctx)
         ast->id = 1;
         ast->nb_frames = nb_audio_frames;
         if ((mlv->class[1] & MLV_CLASS_FLAG_LZMA))
-            avpriv_request_sample(avctx, "compression");
+            av_log_request_sample(avctx, "compression");
         if ((mlv->class[1] & ~MLV_CLASS_FLAG_LZMA) != MLV_AUDIO_CLASS_WAV)
-            avpriv_request_sample(avctx, "unknown audio class");
+            av_log_request_sample(avctx, "unknown audio class");
 
         ast->codecpar->codec_type = AVMEDIA_TYPE_AUDIO;
         avpriv_set_pts_info(ast, 33, 1, ast->codecpar->sample_rate);

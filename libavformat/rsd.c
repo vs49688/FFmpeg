@@ -73,7 +73,7 @@ static int rsd_read_header(AVFormatContext *s)
         const char *tag_buf = av_fourcc2str(par->codec_tag);
         for (i=0; i < FF_ARRAY_ELEMS(rsd_unsupported_tags); i++) {
             if (par->codec_tag == rsd_unsupported_tags[i]) {
-                avpriv_request_sample(s, "Codec tag: %s", tag_buf);
+                av_log_request_sample(s, "Codec tag: %s", tag_buf);
                 return AVERROR_PATCHWELCOME;
             }
         }

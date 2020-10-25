@@ -245,7 +245,7 @@ static int rpl_read_header(AVFormatContext *s)
                 break;
         }
         if (ast->codecpar->codec_id == AV_CODEC_ID_NONE)
-            avpriv_request_sample(s, "Audio format %"PRId32,
+            av_log_request_sample(s, "Audio format %"PRId32,
                                   audio_format);
         avpriv_set_pts_info(ast, 32, 1, ast->codecpar->bit_rate);
     } else {

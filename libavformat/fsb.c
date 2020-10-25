@@ -46,7 +46,7 @@ static int fsb_read_header(AVFormatContext *s)
     avio_skip(pb, 3); // "FSB"
     version = avio_r8(pb) - '0';
     if (version != 4 && version != 3) {
-        avpriv_request_sample(s, "version %d", version);
+        av_log_request_sample(s, "version %d", version);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -96,7 +96,7 @@ static int fsb_read_header(AVFormatContext *s)
                 avio_skip(pb, 14);
             }
         } else {
-            avpriv_request_sample(s, "format 0x%X", format);
+            av_log_request_sample(s, "format 0x%X", format);
             return AVERROR_PATCHWELCOME;
         }
     } else if (version == 4) {
@@ -116,7 +116,7 @@ static int fsb_read_header(AVFormatContext *s)
             par->codec_id = AV_CODEC_ID_ADPCM_THP;
             break;
         default:
-            avpriv_request_sample(s, "format 0x%X", format);
+            av_log_request_sample(s, "format 0x%X", format);
             return AVERROR_PATCHWELCOME;
         }
 

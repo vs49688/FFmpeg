@@ -95,7 +95,7 @@ int ff_get_wav_header(AVFormatContext *s, AVIOContext *pb,
     uint64_t bitrate = 0;
 
     if (size < 14) {
-        avpriv_request_sample(s, "wav header size < 14");
+        av_log_request_sample(s, "wav header size < 14");
         return AVERROR_INVALIDDATA;
     }
 

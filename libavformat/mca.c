@@ -139,7 +139,7 @@ static int read_header(AVFormatContext *s)
             m->data_start = file_size - data_size;
         }
     } else {
-        avpriv_request_sample(s, "version %d", version);
+        av_log_request_sample(s, "version %d", version);
         return AVERROR_PATCHWELCOME;
     }
 

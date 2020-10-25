@@ -457,7 +457,7 @@ static int oma_read_header(AVFormatContext *s)
             goto fail;
         }
         if (samplerate != 44100)
-            avpriv_request_sample(s, "Sample rate %d", samplerate);
+            av_log_request_sample(s, "Sample rate %d", samplerate);
 
         framesize = (codec_params & 0x3FF) * 8;
 

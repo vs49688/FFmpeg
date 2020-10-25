@@ -78,7 +78,7 @@ static int xvag_read_header(AVFormatContext *s)
         st->codecpar->block_align = 16 * st->codecpar->channels;
         break;
     default:
-        avpriv_request_sample(s, "codec %X", codec);
+        av_log_request_sample(s, "codec %X", codec);
         return AVERROR_PATCHWELCOME;
     };
 

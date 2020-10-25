@@ -127,7 +127,7 @@ static int pp_bnk_read_header(AVFormatContext *s)
         return AVERROR_INVALIDDATA;
 
     if (hdr.always1 != 1) {
-        avpriv_request_sample(s, "Non-one header value");
+        av_log_request_sample(s, "Non-one header value");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -162,7 +162,7 @@ static int pp_bnk_read_header(AVFormatContext *s)
         }
 
         if (e.always1_1 != 1 || e.always1_2 != 1) {
-            avpriv_request_sample(s, "Non-one track header values");
+            av_log_request_sample(s, "Non-one track header values");
             ret = AVERROR_PATCHWELCOME;
             goto fail;
         }

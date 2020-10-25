@@ -54,7 +54,7 @@ static int musx_read_header(AVFormatContext *s)
         version != 5 &&
         version != 4 &&
         version != 201) {
-        avpriv_request_sample(s, "Unsupported version: %d", version);
+        av_log_request_sample(s, "Unsupported version: %d", version);
         return AVERROR_PATCHWELCOME;
     }
     avio_skip(s->pb, 4);
@@ -98,7 +98,7 @@ static int musx_read_header(AVFormatContext *s)
             coding = avio_rl32(s->pb);
             if (coding != MKTAG('D', 'A', 'T', '4') &&
                 coding != MKTAG('D', 'A', 'T', '8')) {
-                avpriv_request_sample(s, "Unsupported coding: %X", coding);
+                av_log_request_sample(s, "Unsupported coding: %X", coding);
                 return AVERROR_PATCHWELCOME;
             }
             avio_skip(s->pb, 4);
@@ -129,7 +129,7 @@ static int musx_read_header(AVFormatContext *s)
             st->codecpar->block_align = 0x80 * st->codecpar->channels;
             break;
         default:
-            avpriv_request_sample(s, "Unsupported type: %X", type);
+            av_log_request_sample(s, "Unsupported type: %X", type);
             return AVERROR_PATCHWELCOME;
         }
     } else if (version == 6 || version == 5 || version == 4) {
@@ -157,7 +157,7 @@ static int musx_read_header(AVFormatContext *s)
             offset = avio_rl32(s->pb);
             break;
         default:
-            avpriv_request_sample(s, "Unsupported type: %X", type);
+            av_log_request_sample(s, "Unsupported type: %X", type);
             return AVERROR_PATCHWELCOME;
         }
     } else {

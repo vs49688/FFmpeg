@@ -49,7 +49,7 @@ static int rso_read_header(AVFormatContext *s)
 
     bps = av_get_bits_per_sample(codec);
     if (!bps) {
-        avpriv_request_sample(s, "Unknown bits per sample");
+        av_log_request_sample(s, "Unknown bits per sample");
         return AVERROR_PATCHWELCOME;
     }
 

@@ -275,7 +275,7 @@ static int parse_dsd_prop(AVFormatContext *s, AVStream *st, uint64_t eof)
                 return AVERROR_INVALIDDATA;
             st->codecpar->channel_layout = 0;
             if (st->codecpar->channels > FF_ARRAY_ELEMS(dsd_layout)) {
-                avpriv_request_sample(s, "channel layout");
+                av_log_request_sample(s, "channel layout");
                 break;
             }
             for (i = 0; i < st->codecpar->channels; i++)
@@ -334,7 +334,7 @@ static int parse_dsd_prop(AVFormatContext *s, AVStream *st, uint64_t eof)
                 if (config < FF_ARRAY_ELEMS(dsd_loudspeaker_config))
                     st->codecpar->channel_layout = dsd_loudspeaker_config[config];
                 if (!st->codecpar->channel_layout)
-                    avpriv_request_sample(s, "loudspeaker configuration %d", config);
+                    av_log_request_sample(s, "loudspeaker configuration %d", config);
             }
             break;
         }
@@ -585,7 +585,7 @@ static int iff_read_header(AVFormatContext *s)
             else if (fmt_size == sizeof(deep_abgr) && !memcmp(fmt, deep_abgr, sizeof(deep_abgr)))
                 st->codecpar->format = AV_PIX_FMT_ABGR;
             else {
-                avpriv_request_sample(s, "color format %.16s", fmt);
+                av_log_request_sample(s, "color format %.16s", fmt);
                 return AVERROR_PATCHWELCOME;
             }
             break;
@@ -643,7 +643,7 @@ static int iff_read_header(AVFormatContext *s)
             if (data_size < 4)
                 return AVERROR_INVALIDDATA;
             if (avio_rl32(pb) != MKTAG('S','N','D',' ')) {
-                avpriv_request_sample(s, "unknown property type");
+                av_log_request_sample(s, "unknown property type");
                 break;
             }
             res = parse_dsd_prop(s, st, orig_pos + data_size);
@@ -732,7 +732,7 @@ static int iff_read_header(AVFormatContext *s)
             } else if (iff->maud_bits ==  8 && iff->maud_compression == 3) {
                 st->codecpar->codec_id = AV_CODEC_ID_PCM_MULAW;
             } else {
-                avpriv_request_sample(s, "compression %d and bit depth %d", iff->maud_compression, iff->maud_bits);
+                av_log_request_sample(s, "compression %d and bit depth %d", iff->maud_compression, iff->maud_bits);
                 return AVERROR_PATCHWELCOME;
             }
         } else if (st->codecpar->codec_tag != ID_DSD &&

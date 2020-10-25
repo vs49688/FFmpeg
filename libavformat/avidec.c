@@ -409,10 +409,10 @@ static int avi_extract_stream_metadata(AVFormatContext *s, AVStream *st)
                                       1, 0, &st->metadata);
         break;
     case MKTAG('C', 'A', 'S', 'I'):
-        avpriv_request_sample(s, "RIFF stream data tag type CASI (%u)", tag);
+        av_log_request_sample(s, "RIFF stream data tag type CASI (%u)", tag);
         break;
     case MKTAG('Z', 'o', 'r', 'a'):
-        avpriv_request_sample(s, "RIFF stream data tag type Zora (%u)", tag);
+        av_log_request_sample(s, "RIFF stream data tag type Zora (%u)", tag);
         break;
     default:
         break;

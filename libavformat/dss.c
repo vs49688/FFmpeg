@@ -148,7 +148,7 @@ static int dss_read_header(AVFormatContext *s)
         st->codecpar->codec_id    = AV_CODEC_ID_G723_1;
         st->codecpar->sample_rate = 8000;
     } else {
-        avpriv_request_sample(s, "Support for codec %x in DSS",
+        av_log_request_sample(s, "Support for codec %x in DSS",
                               ctx->audio_codec);
         return AVERROR_PATCHWELCOME;
     }

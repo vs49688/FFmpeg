@@ -100,7 +100,7 @@ static int genh_read_header(AVFormatContext *s)
     case 13: st->codecpar->codec_id = AV_CODEC_ID_PCM_U8;           break;
     case 17: st->codecpar->codec_id = AV_CODEC_ID_ADPCM_IMA_QT;     break;
     default:
-             avpriv_request_sample(s, "codec %d", codec);
+             av_log_request_sample(s, "codec %d", codec);
              return AVERROR_PATCHWELCOME;
     }
 
@@ -122,14 +122,14 @@ static int genh_read_header(AVFormatContext *s)
 
     if (st->codecpar->codec_id == AV_CODEC_ID_ADPCM_THP) {
         if (st->codecpar->channels > 2) {
-            avpriv_request_sample(s, "channels %d>2", st->codecpar->channels);
+            av_log_request_sample(s, "channels %d>2", st->codecpar->channels);
             return AVERROR_PATCHWELCOME;
         }
 
         ff_alloc_extradata(st->codecpar, 32 * st->codecpar->channels);
         for (ch = 0; ch < st->codecpar->channels; ch++) {
             if (coef_type & 1) {
-                avpriv_request_sample(s, "coef_type & 1");
+                av_log_request_sample(s, "coef_type & 1");
                 return AVERROR_PATCHWELCOME;
             } else {
                 avio_seek(s->pb, coef[ch], SEEK_SET);

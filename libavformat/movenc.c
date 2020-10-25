@@ -438,7 +438,7 @@ static int handle_eac3(MOVMuxContext *mov, AVPacket *pkt, MOVTrack *track)
 
             if (hdr->substreamid == info->num_ind_sub + 1) {
                 //info->num_ind_sub++;
-                avpriv_request_sample(mov->fc, "Multiple independent substreams");
+                av_log_request_sample(mov->fc, "Multiple independent substreams");
                 ret = AVERROR_PATCHWELCOME;
                 goto end;
             } else if (hdr->substreamid < info->num_ind_sub ||
@@ -448,7 +448,7 @@ static int handle_eac3(MOVMuxContext *mov, AVPacket *pkt, MOVTrack *track)
             }
         } else {
             if (hdr->substreamid != 0) {
-                avpriv_request_sample(mov->fc, "Multiple non EAC3 independent substreams");
+                av_log_request_sample(mov->fc, "Multiple non EAC3 independent substreams");
                 ret = AVERROR_PATCHWELCOME;
                 goto end;
             }

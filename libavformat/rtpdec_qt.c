@@ -97,7 +97,7 @@ static int qt_rtp_parse_packet(AVFormatContext *s, PayloadContext *qt,
         is_start  = get_bits1(&gb);
         is_finish = get_bits1(&gb);
         if (!is_start || !is_finish) {
-            avpriv_request_sample(s, "RTP-X-QT with payload description "
+            av_log_request_sample(s, "RTP-X-QT with payload description "
                                   "split over several packets");
             return AVERROR_PATCHWELCOME;
         }
@@ -161,7 +161,7 @@ static int qt_rtp_parse_packet(AVFormatContext *s, PayloadContext *qt,
         avio_seek(&pb, 4, SEEK_SET);
 
     if (has_packet_info) {
-        avpriv_request_sample(s, "RTP-X-QT with packet-specific info");
+        av_log_request_sample(s, "RTP-X-QT with packet-specific info");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -230,7 +230,7 @@ static int qt_rtp_parse_packet(AVFormatContext *s, PayloadContext *qt,
         return 0;
 
     default:  /* unimplemented */
-        avpriv_request_sample(NULL, "RTP-X-QT with packing scheme 2");
+        av_log_request_sample(NULL, "RTP-X-QT with packing scheme 2");
         return AVERROR_PATCHWELCOME;
     }
 }

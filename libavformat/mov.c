@@ -1424,7 +1424,7 @@ static int mov_read_mdhd(MOVContext *c, AVIOContext *pb, MOVAtom atom)
 
     version = avio_r8(pb);
     if (version > 1) {
-        avpriv_request_sample(c->fc, "Version %d", version);
+        av_log_request_sample(c->fc, "Version %d", version);
         return AVERROR_PATCHWELCOME;
     }
     avio_rb24(pb); /* flags */
@@ -3140,7 +3140,7 @@ static int get_edit_list_entry(MOVContext *mov,
 
     /* duration is in global timescale units;convert to msc timescale */
     if (global_timescale == 0) {
-      avpriv_request_sample(mov->fc, "Support for mvhd.timescale = 0 with editlists");
+      av_log_request_sample(mov->fc, "Support for mvhd.timescale = 0 with editlists");
       return 0;
     }
     *edit_list_duration = av_rescale(*edit_list_duration, msc->time_scale,
@@ -4025,7 +4025,7 @@ static void mov_build_index(MOVContext *mov, AVStream *st)
                 unsigned size, samples;
 
                 if (sc->samples_per_frame > 1 && !sc->bytes_per_frame) {
-                    avpriv_request_sample(mov->fc,
+                    av_log_request_sample(mov->fc,
                            "Zero bytes per frame, but %d samples per frame",
                            sc->samples_per_frame);
                     return;
@@ -5028,7 +5028,7 @@ static int mov_read_sidx(MOVContext *c, AVIOContext *pb, MOVAtom atom)
 
     version = avio_r8(pb);
     if (version > 1) {
-        avpriv_request_sample(c->fc, "sidx version %u", version);
+        av_log_request_sample(c->fc, "sidx version %u", version);
         return 0;
     }
 
@@ -5073,7 +5073,7 @@ static int mov_read_sidx(MOVContext *c, AVIOContext *pb, MOVAtom atom)
         uint32_t size = avio_rb32(pb);
         uint32_t duration = avio_rb32(pb);
         if (size & 0x80000000) {
-            avpriv_request_sample(c->fc, "sidx reference_type 1");
+            av_log_request_sample(c->fc, "sidx reference_type 1");
             return AVERROR_PATCHWELCOME;
         }
         avio_rb32(pb); // sap_flags

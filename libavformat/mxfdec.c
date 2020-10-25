@@ -649,7 +649,7 @@ static int mxf_read_primer_pack(void *arg, AVIOContext *pb, int tag, int size, U
     int item_len = avio_rb32(pb);
 
     if (item_len != 18) {
-        avpriv_request_sample(pb, "Primer pack item length %d", item_len);
+        av_log_request_sample(pb, "Primer pack item length %d", item_len);
         return AVERROR_PATCHWELCOME;
     }
     if (item_num > 65536 || item_num < 0) {
@@ -2244,7 +2244,7 @@ static enum AVColorRange mxf_get_color_range(MXFContext *mxf, MXFDescriptor *des
             descriptor->white_ref_level == (235<<(descriptor->component_depth - 8)) &&
             descriptor->color_range     == ((14<<(descriptor->component_depth - 4)) + 1))
             return AVCOL_RANGE_MPEG;
-        avpriv_request_sample(mxf->fc, "Unrecognized CDCI color range (color diff range %d, b %d, w %d, depth %d)",
+        av_log_request_sample(mxf->fc, "Unrecognized CDCI color range (color diff range %d, b %d, w %d, depth %d)",
                               descriptor->color_range, descriptor->black_ref_level,
                               descriptor->white_ref_level, descriptor->component_depth);
     }
@@ -2519,7 +2519,7 @@ static int mxf_parse_structural_metadata(MXFContext *mxf)
                                     st->codecpar->field_order = AV_FIELD_TB;
                                     break;
                                 default:
-                                    avpriv_request_sample(mxf->fc,
+                                    av_log_request_sample(mxf->fc,
                                                           "Field dominance %d support",
                                                           descriptor->field_dominance);
                             }
@@ -2533,7 +2533,7 @@ static int mxf_parse_structural_metadata(MXFContext *mxf)
                                     st->codecpar->field_order = AV_FIELD_BT;
                                     break;
                                 default:
-                                    avpriv_request_sample(mxf->fc,
+                                    av_log_request_sample(mxf->fc,
                                                           "Field dominance %d support",
                                                           descriptor->field_dominance);
                             }
@@ -3613,7 +3613,7 @@ static int mxf_read_packet(AVFormatContext *s, AVPacket *pkt)
                     // If we have no way to packetize the data, then return it in chunks...
                     if (klv.next_klv - klv.length == pos && max_data_size > MXF_MAX_CHUNK_SIZE) {
                         st->need_parsing = AVSTREAM_PARSE_FULL;
-                        avpriv_request_sample(s, "Huge KLV without proper index in non-frame wrapped essence");
+                        av_log_request_sample(s, "Huge KLV without proper index in non-frame wrapped essence");
                     }
                     size = FFMIN(max_data_size, MXF_MAX_CHUNK_SIZE);
                 } else {

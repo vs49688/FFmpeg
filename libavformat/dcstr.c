@@ -60,7 +60,7 @@ static int dcstr_read_header(AVFormatContext *s)
     switch (codec) {
     case  4: st->codecpar->codec_id = AV_CODEC_ID_ADPCM_AICA;       break;
     case 16: st->codecpar->codec_id = AV_CODEC_ID_PCM_S16LE_PLANAR; break;
-    default: avpriv_request_sample(s, "codec %X", codec);
+    default: av_log_request_sample(s, "codec %X", codec);
              return AVERROR_PATCHWELCOME;
     }
 

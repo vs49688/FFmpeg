@@ -204,7 +204,7 @@ static int read_header(AVFormatContext *s)
                     AV_CODEC_ID_ADPCM_THP_LE :
                     AV_CODEC_ID_ADPCM_THP;        break;
     default:
-        avpriv_request_sample(s, "codec %d", codec);
+        av_log_request_sample(s, "codec %d", codec);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -364,7 +364,7 @@ static int read_header(AVFormatContext *s)
             b->data_start = avio_tell(s->pb);
 
             if (!bfstm && (major != 1 || minor))
-                avpriv_request_sample(s, "Version %d.%d", major, minor);
+                av_log_request_sample(s, "Version %d.%d", major, minor);
 
             return 0;
         default:

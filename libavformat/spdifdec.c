@@ -95,7 +95,7 @@ static int spdif_get_offset_and_codec(AVFormatContext *s,
         break;
     default:
         if (s) { /* be silent during a probe */
-            avpriv_request_sample(s, "Data type 0x%04x in IEC 61937",
+            av_log_request_sample(s, "Data type 0x%04x in IEC 61937",
                                   data_type);
         }
         return AVERROR_PATCHWELCOME;
@@ -188,7 +188,7 @@ int ff_spdif_read_packet(AVFormatContext *s, AVPacket *pkt)
     pkt_size_bits = avio_rl16(pb);
 
     if (pkt_size_bits % 16)
-        avpriv_request_sample(s, "Packet not ending at a 16-bit boundary");
+        av_log_request_sample(s, "Packet not ending at a 16-bit boundary");
 
     ret = av_new_packet(pkt, FFALIGN(pkt_size_bits, 16) >> 3);
     if (ret)

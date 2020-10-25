@@ -172,7 +172,7 @@ static int au_read_header(AVFormatContext *s)
     codec = ff_codec_get_id(codec_au_tags, id);
 
     if (codec == AV_CODEC_ID_NONE) {
-        avpriv_request_sample(s, "unknown or unsupported codec tag: %u", id);
+        av_log_request_sample(s, "unknown or unsupported codec tag: %u", id);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -187,7 +187,7 @@ static int au_read_header(AVFormatContext *s)
             bps = bpcss[id - 23];
         }
     } else if (!bps) {
-        avpriv_request_sample(s, "Unknown bits per sample");
+        av_log_request_sample(s, "Unknown bits per sample");
         return AVERROR_PATCHWELCOME;
     }
 

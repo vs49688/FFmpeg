@@ -129,7 +129,7 @@ static int get_aiff_header(AVFormatContext *s, int size,
         par->codec_tag = avio_rl32(pb);
         par->codec_id  = ff_codec_get_id(ff_codec_aiff_tags, par->codec_tag);
         if (par->codec_id == AV_CODEC_ID_NONE)
-            avpriv_request_sample(s, "unknown or unsupported codec tag: %s",
+            av_log_request_sample(s, "unknown or unsupported codec tag: %s",
                                   av_fourcc2str(par->codec_tag));
         size -= 4;
     }

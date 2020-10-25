@@ -140,7 +140,7 @@ static int parse_fmtp(AVFormatContext *s,
     } else if (!strcmp(attr, "cpresent")) {
         int cpresent = atoi(value);
         if (cpresent != 0)
-            avpriv_request_sample(s,
+            av_log_request_sample(s,
                                   "RTP MP4A-LATM with in-band configuration");
     }
 

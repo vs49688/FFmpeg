@@ -316,7 +316,7 @@ static int spdif_header_dts(AVFormatContext *s, AVPacket *pkt)
          * discs and dts-in-wav. */
         ctx->use_preamble = 0;
     } else if (ctx->out_bytes > ctx->pkt_offset - BURST_HEADER_SIZE) {
-        avpriv_request_sample(s, "Unrecognized large DTS frame");
+        av_log_request_sample(s, "Unrecognized large DTS frame");
         /* This will fail with a "bitrate too high" in the caller */
     }
 
@@ -471,7 +471,7 @@ static int spdif_header_truehd(AVFormatContext *s, AVPacket *pkt)
 
         /* sanity check */
         if (padding_remaining < 0 || padding_remaining >= MAT_FRAME_SIZE / 2) {
-            avpriv_request_sample(s, "Unusual frame timing: %"PRIu16" => %"PRIu16", %d samples/frame",
+            av_log_request_sample(s, "Unusual frame timing: %"PRIu16" => %"PRIu16", %d samples/frame",
                                   ctx->truehd_prev_time, input_timing, ctx->truehd_samples_per_frame);
             padding_remaining = 0;
         }

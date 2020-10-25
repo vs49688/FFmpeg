@@ -111,7 +111,7 @@ static int cine_read_header(AVFormatContext *avctx)
     compression = avio_rl16(pb);
     version     = avio_rl16(pb);
     if (version != 1) {
-        avpriv_request_sample(avctx, "unknown version %i", version);
+        av_log_request_sample(avctx, "unknown version %i", version);
         return AVERROR_INVALIDDATA;
     }
 
@@ -135,7 +135,7 @@ static int cine_read_header(AVFormatContext *avctx)
 
     biBitCount = avio_rl16(pb);
     if (biBitCount != 8 && biBitCount != 16 && biBitCount != 24 && biBitCount != 48) {
-        avpriv_request_sample(avctx, "unsupported biBitCount %i", biBitCount);
+        av_log_request_sample(avctx, "unsupported biBitCount %i", biBitCount);
         return AVERROR_INVALIDDATA;
     }
 
@@ -148,7 +148,7 @@ static int cine_read_header(AVFormatContext *avctx)
         vflip = 1;
         break;
     default:
-        avpriv_request_sample(avctx, "unknown bitmap compression");
+        av_log_request_sample(avctx, "unknown bitmap compression");
         return AVERROR_INVALIDDATA;
     }
 
@@ -161,7 +161,7 @@ static int cine_read_header(AVFormatContext *avctx)
         return AVERROR_INVALIDDATA;
     length = avio_rl16(pb);
     if (length < 0x163C) {
-        avpriv_request_sample(avctx, "short SETUP header");
+        av_log_request_sample(avctx, "short SETUP header");
         return AVERROR_INVALIDDATA;
     }
 
@@ -209,7 +209,7 @@ static int cine_read_header(AVFormatContext *avctx)
         } else if (biBitCount == 48) {
             st->codecpar->format = AV_PIX_FMT_BGR48LE;
         } else {
-            avpriv_request_sample(avctx, "unsupported biBitCount %i", biBitCount);
+            av_log_request_sample(avctx, "unsupported biBitCount %i", biBitCount);
             return AVERROR_INVALIDDATA;
         }
     } else if (compression == CC_UNINT) {
@@ -220,7 +220,7 @@ static int cine_read_header(AVFormatContext *avctx)
             } else if (biBitCount == 16) {
                 st->codecpar->format = AV_PIX_FMT_BAYER_GBRG16LE;
             } else {
-                avpriv_request_sample(avctx, "unsupported biBitCount %i", biBitCount);
+                av_log_request_sample(avctx, "unsupported biBitCount %i", biBitCount);
                 return AVERROR_INVALIDDATA;
             }
             break;
@@ -230,16 +230,16 @@ static int cine_read_header(AVFormatContext *avctx)
             } else if (biBitCount == 16) {
                 st->codecpar->format = AV_PIX_FMT_BAYER_RGGB16LE;
             } else {
-                avpriv_request_sample(avctx, "unsupported biBitCount %i", biBitCount);
+                av_log_request_sample(avctx, "unsupported biBitCount %i", biBitCount);
                 return AVERROR_INVALIDDATA;
             }
             break;
         default:
-           avpriv_request_sample(avctx, "unsupported Color Field Array (CFA) %i", CFA & 0xFFFFFF);
+           av_log_request_sample(avctx, "unsupported Color Field Array (CFA) %i", CFA & 0xFFFFFF);
             return AVERROR_INVALIDDATA;
         }
     } else { //CC_LEAD
-        avpriv_request_sample(avctx, "unsupported compression %i", compression);
+        av_log_request_sample(avctx, "unsupported compression %i", compression);
         return AVERROR_INVALIDDATA;
     }
 

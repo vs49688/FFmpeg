@@ -85,7 +85,7 @@ int ff_argo_asf_fill_stream(AVFormatContext *s, AVStream *st, const ArgoASFFileH
     }
 
     if ((ckhdr->flags & ASF_CF_ALWAYS1) != ASF_CF_ALWAYS1 || (ckhdr->flags & ASF_CF_ALWAYS0) != 0) {
-        avpriv_request_sample(s, "Nonstandard flags (0x%08X)", ckhdr->flags);
+        av_log_request_sample(s, "Nonstandard flags (0x%08X)", ckhdr->flags);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -116,7 +116,7 @@ int ff_argo_asf_fill_stream(AVFormatContext *s, AVStream *st, const ArgoASFFileH
 
     if (st->codecpar->bits_per_raw_sample != 16) {
         /* The header allows for these, but I've never seen any files with them. */
-        avpriv_request_sample(s, "Non 16-bit samples");
+        av_log_request_sample(s, "Non 16-bit samples");
         return AVERROR_PATCHWELCOME;
     }
 

@@ -83,7 +83,7 @@ static int msf_read_header(AVFormatContext *s)
     case 7: st->need_parsing = AVSTREAM_PARSE_FULL_RAW;
             st->codecpar->codec_id = AV_CODEC_ID_MP3;       break;
     default:
-            avpriv_request_sample(s, "Codec %d", codec);
+            av_log_request_sample(s, "Codec %d", codec);
             return AVERROR_PATCHWELCOME;
     }
     st->duration = av_get_audio_frame_duration2(st->codecpar, size);

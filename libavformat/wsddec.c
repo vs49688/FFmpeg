@@ -48,11 +48,11 @@ static int wsd_to_av_channel_layoyt(AVFormatContext *s, int bit)
     switch (bit) {
     case 2: return AV_CH_BACK_RIGHT;
     case 3:
-        avpriv_request_sample(s, "Rr-middle");
+        av_log_request_sample(s, "Rr-middle");
         break;
     case 4: return AV_CH_BACK_CENTER;
     case 5:
-        avpriv_request_sample(s, "Lr-middle");
+        av_log_request_sample(s, "Lr-middle");
         break;
     case 6: return AV_CH_BACK_LEFT;
     case 24: return AV_CH_LOW_FREQUENCY;
@@ -143,7 +143,7 @@ static int wsd_read_header(AVFormatContext *s)
 
     avio_skip(pb, 16);
     if (avio_rb32(pb))
-       avpriv_request_sample(s, "emphasis");
+       av_log_request_sample(s, "emphasis");
 
     if (avio_seek(pb, text_offset, SEEK_SET) >= 0) {
         get_metadata(s, "title",       128);

@@ -104,7 +104,7 @@ static int alp_read_header(AVFormatContext *s)
     }
 
     if (hdr.sample_rate > 44100) {
-        avpriv_request_sample(s, "Sample Rate > 44100");
+        av_log_request_sample(s, "Sample Rate > 44100");
         return AVERROR_PATCHWELCOME;
     }
 

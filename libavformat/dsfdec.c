@@ -92,12 +92,12 @@ static int dsf_read_header(AVFormatContext *s)
         return AVERROR_INVALIDDATA;
 
     if (avio_rl32(pb) != 1) {
-        avpriv_request_sample(s, "unknown format version");
+        av_log_request_sample(s, "unknown format version");
         return AVERROR_INVALIDDATA;
     }
 
     if (avio_rl32(pb)) {
-        avpriv_request_sample(s, "unknown format id");
+        av_log_request_sample(s, "unknown format id");
         return AVERROR_INVALIDDATA;
     }
 
@@ -105,7 +105,7 @@ static int dsf_read_header(AVFormatContext *s)
     if (channel_type < FF_ARRAY_ELEMS(dsf_channel_layout))
         st->codecpar->channel_layout = dsf_channel_layout[channel_type];
     if (!st->codecpar->channel_layout)
-        avpriv_request_sample(s, "channel type %i", channel_type);
+        av_log_request_sample(s, "channel type %i", channel_type);
 
     st->codecpar->codec_type   = AVMEDIA_TYPE_AUDIO;
     st->codecpar->channels     = avio_rl32(pb);
@@ -118,14 +118,14 @@ static int dsf_read_header(AVFormatContext *s)
     case 1: st->codecpar->codec_id = AV_CODEC_ID_DSD_LSBF_PLANAR; break;
     case 8: st->codecpar->codec_id = AV_CODEC_ID_DSD_MSBF_PLANAR; break;
     default:
-        avpriv_request_sample(s, "unknown most significant bit");
+        av_log_request_sample(s, "unknown most significant bit");
         return AVERROR_INVALIDDATA;
     }
 
     dsf->audio_size = avio_rl64(pb) / 8 * st->codecpar->channels;
     st->codecpar->block_align = avio_rl32(pb);
     if (st->codecpar->block_align > INT_MAX / st->codecpar->channels) {
-        avpriv_request_sample(s, "block_align overflow");
+        av_log_request_sample(s, "block_align overflow");
         return AVERROR_INVALIDDATA;
     }
     st->codecpar->block_align *= st->codecpar->channels;

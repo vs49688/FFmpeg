@@ -102,7 +102,7 @@ static int wsaud_read_header(AVFormatContext *s)
     switch (codec) {
     case  1:
         if (channels != 1) {
-            avpriv_request_sample(s, "Stereo WS-SND1");
+            av_log_request_sample(s, "Stereo WS-SND1");
             return AVERROR_PATCHWELCOME;
         }
         st->codecpar->codec_id = AV_CODEC_ID_WESTWOOD_SND1;
@@ -113,7 +113,7 @@ static int wsaud_read_header(AVFormatContext *s)
         st->codecpar->bit_rate = channels * sample_rate * 4;
         break;
     default:
-        avpriv_request_sample(s, "Unknown codec: %d", codec);
+        av_log_request_sample(s, "Unknown codec: %d", codec);
         return AVERROR_PATCHWELCOME;
     }
     avpriv_set_pts_info(st, 64, 1, sample_rate);

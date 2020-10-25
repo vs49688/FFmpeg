@@ -118,7 +118,7 @@ static int read_frame(BVID_DemuxContext *vid, AVIOContext *pb, AVPacket *pkt,
             return AVERROR(ENOMEM);
         vid->video_index = st->index;
         if (vid->audio_index < 0) {
-            avpriv_request_sample(s, "Using default video time base since "
+            av_log_request_sample(s, "Using default video time base since "
                                   "having no audio packet before the first "
                                   "video packet");
         }

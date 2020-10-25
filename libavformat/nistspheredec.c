@@ -75,7 +75,7 @@ static int nist_read_header(AVFormatContext *s)
                 if (ff_alloc_extradata(st->codecpar, 1))
                     st->codecpar->extradata[0] = 1;
             } else {
-                avpriv_request_sample(s, "coding %s", coding);
+                av_log_request_sample(s, "coding %s", coding);
             }
 
             avpriv_set_pts_info(st, 64, 1, st->codecpar->sample_rate);
@@ -100,7 +100,7 @@ static int nist_read_header(AVFormatContext *s)
             } else if (!av_strcasecmp(format, "mu-law")) {
                 st->codecpar->codec_id = AV_CODEC_ID_PCM_MULAW;
             } else if (av_strcasecmp(format, "1")) {
-                avpriv_request_sample(s, "sample byte format %s", format);
+                av_log_request_sample(s, "sample byte format %s", format);
                 return AVERROR_PATCHWELCOME;
             }
         } else if (!memcmp(buffer, "sample_coding", 13)) {

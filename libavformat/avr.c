@@ -57,7 +57,7 @@ static int avr_read_header(AVFormatContext *s)
     } else if (chan == 0xFFFFu) {
         st->codecpar->channels = 2;
     } else {
-        avpriv_request_sample(s, "chan %d", chan);
+        av_log_request_sample(s, "chan %d", chan);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -77,7 +77,7 @@ static int avr_read_header(AVFormatContext *s)
 
     st->codecpar->codec_id = ff_get_pcm_codec_id(bps, 0, 1, sign);
     if (st->codecpar->codec_id == AV_CODEC_ID_NONE) {
-        avpriv_request_sample(s, "Bps %d and sign %d", bps, sign);
+        av_log_request_sample(s, "Bps %d and sign %d", bps, sign);
         return AVERROR_PATCHWELCOME;
     }
 

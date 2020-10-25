@@ -292,7 +292,7 @@ static void flv_set_audio_codec(AVFormatContext *s, AVStream *astream,
         apar->codec_id    = AV_CODEC_ID_PCM_ALAW;
         break;
     default:
-        avpriv_request_sample(s, "Audio codec (%x)",
+        av_log_request_sample(s, "Audio codec (%x)",
                flv_codecid >> FLV_AUDIO_CODECID_OFFSET);
         apar->codec_tag = flv_codecid >> FLV_AUDIO_CODECID_OFFSET;
     }
@@ -368,12 +368,12 @@ static int flv_set_video_codec(AVFormatContext *s, AVStream *vstream,
         ret = 3;
         break;
     default:
-        avpriv_request_sample(s, "Video codec (%x)", flv_codecid);
+        av_log_request_sample(s, "Video codec (%x)", flv_codecid);
         par->codec_tag = flv_codecid;
     }
 
     if (!vstream->internal->need_context_update && par->codec_id != old_codec_id) {
-        avpriv_request_sample(s, "Changing the codec id midstream");
+        av_log_request_sample(s, "Changing the codec id midstream");
         return AVERROR_PATCHWELCOME;
     }
 
@@ -1064,7 +1064,7 @@ retry:
                 }
                 goto skip;
             } else if (type == TYPE_ONTEXTDATA) {
-                avpriv_request_sample(s, "OnTextData packet");
+                av_log_request_sample(s, "OnTextData packet");
                 return flv_data_packet(s, pkt, dts, next);
             } else if (type == TYPE_ONCAPTION) {
                 return flv_data_packet(s, pkt, dts, next);

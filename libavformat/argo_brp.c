@@ -122,7 +122,7 @@ static int read_extradata(AVFormatContext *s, const ArgoBRPStreamHeader *hdr,
         name = "MASK";
         size = MASK_HEADER_SIZE;
     } else {
-        avpriv_request_sample(s, "BRP codec id 0x%x", hdr->codec_id);
+        av_log_request_sample(s, "BRP codec id 0x%x", hdr->codec_id);
 
         if ((ret = avio_skip(s->pb, hdr->extradata_size)) < 0)
             return ret;
@@ -167,7 +167,7 @@ static int argo_brp_read_header(AVFormatContext *s)
         return AVERROR_INVALIDDATA;
 
     if (brp->fhdr.num_streams > BRP_MAX_STREAMS) {
-        avpriv_request_sample(s, ">%d streams", BRP_MAX_STREAMS);
+        av_log_request_sample(s, ">%d streams", BRP_MAX_STREAMS);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -235,7 +235,7 @@ static int argo_brp_read_header(AVFormatContext *s)
              * with more than one.
              */
             if (brp->basf.index >= 0) {
-                avpriv_request_sample(s, "Multiple BASF streams");
+                av_log_request_sample(s, "Multiple BASF streams");
                 return AVERROR_PATCHWELCOME;
             }
 

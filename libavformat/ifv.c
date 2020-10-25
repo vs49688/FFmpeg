@@ -103,7 +103,7 @@ static int parse_header(AVFormatContext *s)
     vid_magic = avio_rl32(s->pb);
 
     if (vid_magic != MKTAG('H','2','6','4'))
-        avpriv_request_sample(s, "Unknown video codec %x", vid_magic);
+        av_log_request_sample(s, "Unknown video codec %x", vid_magic);
 
     avio_skip(s->pb, 0x2c);
     ifv->sample_rate = avio_rl32(s->pb);
@@ -114,7 +114,7 @@ static int parse_header(AVFormatContext *s)
     } else if (aud_magic == MKTAG('P','C','M','U')) {
         ifv->is_audio_present = 0;
     } else {
-        avpriv_request_sample(s, "Unknown audio codec %x", aud_magic);
+        av_log_request_sample(s, "Unknown audio codec %x", aud_magic);
     }
 
     avio_skip(s->pb, 0x44);

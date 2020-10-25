@@ -45,7 +45,7 @@ static int lvf_read_header(AVFormatContext *s)
     if (!nb_streams)
         return AVERROR_INVALIDDATA;
     if (nb_streams > 2) {
-        avpriv_request_sample(s, "%d streams", nb_streams);
+        av_log_request_sample(s, "%d streams", nb_streams);
         return AVERROR_PATCHWELCOME;
     }
 
@@ -91,7 +91,7 @@ static int lvf_read_header(AVFormatContext *s)
             avio_seek(s->pb, 2048 + 8, SEEK_SET);
             return 0;
         default:
-            avpriv_request_sample(s, "id %d", id);
+            av_log_request_sample(s, "id %d", id);
             return AVERROR_PATCHWELCOME;
         }
 

@@ -162,7 +162,7 @@ static int apm_read_header(AVFormatContext *s)
         return AVERROR_INVALIDDATA;
 
     if (extradata.state.has_saved) {
-        avpriv_request_sample(s, "Saved Samples");
+        av_log_request_sample(s, "Saved Samples");
         return AVERROR_PATCHWELCOME;
     }
 

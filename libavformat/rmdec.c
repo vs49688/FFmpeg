@@ -272,7 +272,7 @@ static int rm_read_audio_stream_info(AVFormatContext *s, AVIOContext *pb,
                 ast->coded_framesize * sub_packet_h > (2 + (sub_packet_h & 1)) * ast->audio_framesize)
                 return AVERROR_INVALIDDATA;
             if (ast->coded_framesize * sub_packet_h != 2*ast->audio_framesize) {
-                avpriv_request_sample(s, "mismatching interleaver parameters");
+                av_log_request_sample(s, "mismatching interleaver parameters");
                 return AVERROR_INVALIDDATA;
             }
             break;
@@ -504,7 +504,7 @@ static int rm_read_multi(AVFormatContext *s, AVIOContext *pb,
         avio_rb16(pb);
     number_of_mdpr = avio_rb16(pb);
     if (number_of_mdpr != 1) {
-        avpriv_request_sample(s, "MLTI with multiple (%d) MDPR", number_of_mdpr);
+        av_log_request_sample(s, "MLTI with multiple (%d) MDPR", number_of_mdpr);
     }
     for (i = 0; i < number_of_mdpr; i++) {
         AVStream *st2;

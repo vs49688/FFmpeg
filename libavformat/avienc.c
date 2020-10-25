@@ -614,7 +614,7 @@ static void update_odml_entry(AVFormatContext *s, int stream_index, int64_t ix, 
     if (s->streams[stream_index]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO && au_ssize > 0) {
         uint32_t audio_segm_size = (avist->audio_strm_length - avist->indexes.audio_strm_offset);
         if ((audio_segm_size % au_ssize > 0) && !avist->sample_requested) {
-            avpriv_request_sample(s, "OpenDML index duration for audio packets with partial frames");
+            av_log_request_sample(s, "OpenDML index duration for audio packets with partial frames");
             avist->sample_requested = 1;
         }
         avio_wl32(pb, audio_segm_size / au_ssize);  /* dwDuration (sample count) */

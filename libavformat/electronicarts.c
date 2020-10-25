@@ -222,7 +222,7 @@ static int process_audio_header_elements(AVFormatContext *s)
         case -1:
             break;
         default:
-            avpriv_request_sample(s, "stream type; revision=%i", revision);
+            av_log_request_sample(s, "stream type; revision=%i", revision);
             return 0;
         }
         switch (revision2) {
@@ -235,7 +235,7 @@ static int process_audio_header_elements(AVFormatContext *s)
             case  2: ea->audio_codec = AV_CODEC_ID_ADPCM_EA_R1; break;
             case  3: ea->audio_codec = AV_CODEC_ID_ADPCM_EA_R2; break;
             default:
-                avpriv_request_sample(s, "stream type; revision=%i, revision2=%i", revision, revision2);
+                av_log_request_sample(s, "stream type; revision=%i, revision2=%i", revision, revision2);
                 return 0;
             }
             break;
@@ -247,12 +247,12 @@ static int process_audio_header_elements(AVFormatContext *s)
             break;
         default:
             ea->audio_codec = AV_CODEC_ID_NONE;
-            avpriv_request_sample(s, "stream type; revision2=%i", revision2);
+            av_log_request_sample(s, "stream type; revision2=%i", revision2);
             return 0;
         }
         break;
     default:
-        avpriv_request_sample(s,
+        av_log_request_sample(s,
                               "stream type; compression_type=%i",
                               compression_type);
         return 0;
@@ -297,7 +297,7 @@ static void process_audio_header_eacs(AVFormatContext *s)
         ea->audio_codec = AV_CODEC_ID_ADPCM_IMA_EA_EACS;
         break;
     default:
-        avpriv_request_sample(s,
+        av_log_request_sample(s,
                               "stream type; audio compression_type=%i",
                               compression_type);
     }
@@ -381,7 +381,7 @@ static int process_ea_header(AVFormatContext *s)
         switch (blockid) {
         case ISNh_TAG:
             if (avio_rl32(pb) != EACS_TAG) {
-                avpriv_request_sample(s, "unknown 1SNh headerid");
+                av_log_request_sample(s, "unknown 1SNh headerid");
                 return 0;
             }
             process_audio_header_eacs(s);
@@ -616,7 +616,7 @@ static int ea_read_packet(AVFormatContext *s, AVPacket *pkt)
             }
 
             if (partial_packet) {
-                avpriv_request_sample(s, "video header followed by audio packet");
+                av_log_request_sample(s, "video header followed by audio packet");
                 av_packet_unref(pkt);
                 partial_packet = 0;
             }

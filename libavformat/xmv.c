@@ -162,7 +162,7 @@ static int xmv_read_header(AVFormatContext *s)
 
     file_version = avio_rl32(pb);
     if ((file_version != 4) && (file_version != 2))
-        avpriv_request_sample(s, "Uncommon version %"PRIu32"", file_version);
+        av_log_request_sample(s, "Uncommon version %"PRIu32"", file_version);
 
     /* Video tracks */
 

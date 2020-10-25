@@ -1907,7 +1907,7 @@ int ff_parse_mpeg2_descriptor(AVFormatContext *fc, AVStream *st, int stream_type
                 return AVERROR_INVALIDDATA;
 
             if (language_count > 1) {
-                avpriv_request_sample(fc, "DVB subtitles with multiple languages");
+                av_log_request_sample(fc, "DVB subtitles with multiple languages");
             }
 
             if (language_count > 0) {
@@ -2030,7 +2030,7 @@ int ff_parse_mpeg2_descriptor(AVFormatContext *fc, AVStream *st, int stream_type
                     st->codecpar->extradata[20] = opus_coupled_stream_cnt[channel_config_code];
                     memcpy(&st->codecpar->extradata[21], opus_channel_map[channels - 1], channels);
                 } else {
-                    avpriv_request_sample(fc, "Opus in MPEG-TS - channel_config_code > 0x8");
+                    av_log_request_sample(fc, "Opus in MPEG-TS - channel_config_code > 0x8");
                 }
                 st->need_parsing = AVSTREAM_PARSE_FULL;
                 st->internal->need_context_update = 1;

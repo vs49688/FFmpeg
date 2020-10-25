@@ -192,7 +192,7 @@ static int parse_video_var(AVFormatContext *avctx, AVStream *st,
         } else if (!strcmp(str, "MVC2")) {
             st->codecpar->codec_id = AV_CODEC_ID_MVC2;
         } else {
-            avpriv_request_sample(avctx, "Video compression %s", str);
+            av_log_request_sample(avctx, "Video compression %s", str);
         }
         av_free(str);
     } else if (!strcmp(name, "FPS")) {
@@ -251,7 +251,7 @@ static int read_table(AVFormatContext *avctx, AVStream *st,
             return AVERROR_INVALIDDATA;
         }
         if (parse(avctx, st, name, size) < 0) {
-            avpriv_request_sample(avctx, "Variable %s", name);
+            av_log_request_sample(avctx, "Variable %s", name);
             avio_skip(pb, size);
         }
     }
@@ -314,7 +314,7 @@ static int mv_read_header(AVFormatContext *avctx)
             vst->codecpar->codec_id = AV_CODEC_ID_RAWVIDEO;
             break;
         default:
-            avpriv_request_sample(avctx, "Video compression %i", v);
+            av_log_request_sample(avctx, "Video compression %i", v);
             break;
         }
         vst->codecpar->codec_tag = 0;
@@ -337,7 +337,7 @@ static int mv_read_header(AVFormatContext *avctx)
         if (v == AUDIO_FORMAT_SIGNED) {
             ast->codecpar->codec_id = AV_CODEC_ID_PCM_S16BE;
         } else {
-            avpriv_request_sample(avctx, "Audio compression (format %i)", v);
+            av_log_request_sample(avctx, "Audio compression (format %i)", v);
         }
 
         avio_skip(pb, 12);
@@ -370,7 +370,7 @@ static int mv_read_header(AVFormatContext *avctx)
         }
 
         if (mv->nb_audio_tracks > 1) {
-            avpriv_request_sample(avctx, "Multiple audio streams support");
+            av_log_request_sample(avctx, "Multiple audio streams support");
             return AVERROR_PATCHWELCOME;
         } else if (mv->nb_audio_tracks) {
             ast = avformat_new_stream(avctx, NULL);
@@ -384,7 +384,7 @@ static int mv_read_header(AVFormatContext *avctx)
                 ast->codecpar->bits_per_coded_sample == 16) {
                 ast->codecpar->codec_id = AV_CODEC_ID_PCM_S16BE;
             } else {
-                avpriv_request_sample(avctx,
+                av_log_request_sample(avctx,
                                       "Audio compression %i (format %i, sr %i)",
                                       mv->acompression, mv->aformat,
                                       ast->codecpar->bits_per_coded_sample);
@@ -397,7 +397,7 @@ static int mv_read_header(AVFormatContext *avctx)
         }
 
         if (mv->nb_video_tracks > 1) {
-            avpriv_request_sample(avctx, "Multiple video streams support");
+            av_log_request_sample(avctx, "Multiple video streams support");
             return AVERROR_PATCHWELCOME;
         } else if (mv->nb_video_tracks) {
             vst = avformat_new_stream(avctx, NULL);
@@ -414,7 +414,7 @@ static int mv_read_header(AVFormatContext *avctx)
         if (mv->nb_video_tracks)
             read_index(pb, vst);
     } else {
-        avpriv_request_sample(avctx, "Version %i", version);
+        av_log_request_sample(avctx, "Version %i", version);
         return AVERROR_PATCHWELCOME;
     }
 
