@@ -146,7 +146,7 @@ static av_cold int adpcm_encode_init(AVCodecContext *avctx)
             ret = AVERROR(EINVAL);
             goto error;
         }
-        avctx->frame_size = 512 * (avctx->sample_rate / 11025);
+        avctx->frame_size  = 4096; /* Hardcoded according to the SWF spec. */
         avctx->block_align = (2 + avctx->channels * (22 + 4 * (avctx->frame_size - 1)) + 7) / 8;
         break;
     case AV_CODEC_ID_ADPCM_IMA_SSI:
