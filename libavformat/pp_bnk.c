@@ -55,6 +55,7 @@ typedef struct PPBnkCtx {
     int             track_count;
     PPBnkCtxTrack   *tracks;
     uint32_t        current_track;
+    int             eofcount;
 } PPBnkCtx;
 
 enum {
@@ -233,18 +234,22 @@ static int pp_bnk_read_packet(AVFormatContext *s, AVPacket *pkt)
      * Read a packet from each track, round-robin style.
      * This method is nasty, but needed to avoid "Too many packets buffered" errors.
      */
-    for (int i = 0; i < ctx->track_count; i++, ctx->current_track++)
-    {
         int64_t ret;
         int size;
         PPBnkCtxTrack *trk;
+
+        if (ctx->eofcount > ctx->track_count)
+            return AVERROR_EOF;
 
         ctx->current_track %= ctx->track_count;
 
         trk = ctx->tracks + ctx->current_track;
 
-        if (trk->bytes_read == trk->data_size)
-            continue;
+        if (trk->bytes_read == trk->data_size) {
+            ctx->current_track++;
+            ctx->eofcount++;
+            return FFERROR_REDO;
+        }
 
         if ((ret = avio_seek(s->pb, trk->data_offset + trk->bytes_read, SEEK_SET)) < 0)
             return ret;
@@ -256,7 +261,8 @@ static int pp_bnk_read_packet(AVFormatContext *s, AVPacket *pkt)
         if ((ret = av_get_packet(s->pb, pkt, size)) == AVERROR_EOF) {
             /* If we've hit EOF, don't attempt this track again. */
             trk->data_size = trk->bytes_read;
-            continue;
+            ctx->current_track++;
+            return FFERROR_REDO;
         } else if (ret < 0) {
             return ret;
         }
@@ -266,10 +272,6 @@ static int pp_bnk_read_packet(AVFormatContext *s, AVPacket *pkt)
         pkt->stream_index   = ctx->current_track++;
         pkt->duration       = ret * 2;
         return 0;
-    }
-
-    /* If we reach here, we're done. */
-    return AVERROR_EOF;
 }
 
 static int pp_bnk_read_close(AVFormatContext *s)
