@@ -234,44 +234,44 @@ static int pp_bnk_read_packet(AVFormatContext *s, AVPacket *pkt)
      * Read a packet from each track, round-robin style.
      * This method is nasty, but needed to avoid "Too many packets buffered" errors.
      */
-        int64_t ret;
-        int size;
-        PPBnkCtxTrack *trk;
+    int64_t ret;
+    int size;
+    PPBnkCtxTrack *trk;
 
-        if (ctx->eofcount > ctx->track_count)
-            return AVERROR_EOF;
+    if (ctx->eofcount > ctx->track_count)
+        return AVERROR_EOF;
 
-        ctx->current_track %= ctx->track_count;
+    ctx->current_track %= ctx->track_count;
 
-        trk = ctx->tracks + ctx->current_track;
+    trk = ctx->tracks + ctx->current_track;
 
-        if (trk->bytes_read == trk->data_size) {
-            ctx->current_track++;
-            ctx->eofcount++;
-            return FFERROR_REDO;
-        }
+    if (trk->bytes_read == trk->data_size) {
+        ctx->current_track++;
+        ctx->eofcount++;
+        return FFERROR_REDO;
+    }
 
-        if ((ret = avio_seek(s->pb, trk->data_offset + trk->bytes_read, SEEK_SET)) < 0)
-            return ret;
-        else if (ret != trk->data_offset + trk->bytes_read)
-            return AVERROR(EIO);
+    if ((ret = avio_seek(s->pb, trk->data_offset + trk->bytes_read, SEEK_SET)) < 0)
+        return ret;
+    else if (ret != trk->data_offset + trk->bytes_read)
+        return AVERROR(EIO);
 
-        size = FFMIN(trk->data_size - trk->bytes_read, PP_BNK_MAX_READ_SIZE);
+    size = FFMIN(trk->data_size - trk->bytes_read, PP_BNK_MAX_READ_SIZE);
 
-        if ((ret = av_get_packet(s->pb, pkt, size)) == AVERROR_EOF) {
-            /* If we've hit EOF, don't attempt this track again. */
-            trk->data_size = trk->bytes_read;
-            ctx->current_track++;
-            return FFERROR_REDO;
-        } else if (ret < 0) {
-            return ret;
-        }
+    if ((ret = av_get_packet(s->pb, pkt, size)) == AVERROR_EOF) {
+        /* If we've hit EOF, don't attempt this track again. */
+        trk->data_size = trk->bytes_read;
+        ctx->current_track++;
+        return FFERROR_REDO;
+    } else if (ret < 0) {
+        return ret;
+    }
 
-        trk->bytes_read    += ret;
-        pkt->flags         &= ~AV_PKT_FLAG_CORRUPT;
-        pkt->stream_index   = ctx->current_track++;
-        pkt->duration       = ret * 2;
-        return 0;
+    trk->bytes_read    += ret;
+    pkt->flags         &= ~AV_PKT_FLAG_CORRUPT;
+    pkt->stream_index   = ctx->current_track++;
+    pkt->duration       = ret * 2;
+    return 0;
 }
 
 static int pp_bnk_read_close(AVFormatContext *s)
